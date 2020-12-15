@@ -22,7 +22,10 @@
 			let amisScoped = amis.embed('#root', {
 				type: 'page',
 				initApi: 'http://kg.zdrgs.com/api/users/me?_mode=dev',
-				body: '我是'
+				// "data": {
+				// 	"me": "小明!"
+				// },
+				body: '我是 ${username}'
 			});
 
 			window.amisScoped = amisScoped;
