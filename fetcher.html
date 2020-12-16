@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>HelloWorld</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/amis@1.0.19/sdk/sdk.css">
+</head>
+
+<body>
+	<div id="root" class="app-wrapper"></div>
+
+	<script src="https://cdn.jsdelivr.net/npm/amis@1.0.19/sdk/sdk.js"></script>
+
+	<script type="text/javascript">
+		(function () {
+			let amis = amisRequire('amis/embed');
+
+			// type 必须 组件的类型 
+			// body 是一个 tpl 组件
+			let amisScoped = amis.embed('#root', {
+				type: 'page',
+				// initApi: {
+				// 	method: 'get',
+				// 	url: 'http://kg.zdrgs.com/api/users/me?_mode=dev',
+				// 	adaptor: function (body, res) {
+				// 		return {
+				// 			status: res.status === 200 ? 0 : res.status,
+				// 			msg: res.status === 200 ? 'success' : body.message,
+				// 			data: body
+				// 		};
+				// 	}
+				// },
+				initApi: 'http://kg.zdrgs.com/api/users/me?_mode=dev',
+				// "data": {
+				// 	"me": "小明!"
+				// },
+				body: '我是 ${username}'
+			}, {}, {
+				fetcher: ({ url, method, data, config }) => {
+					return fetch(url, {
+						headers: {
+							accept: 'application/json'
+						}
+					})
+						.then(res => {
+							return Promise.all([
+								Promise.resolve(res),
+								res.json()
+							]);
+						})
+						.then(([res, body]) => {
+							const headers = {};
+							for (const [header, value] of res.headers.entries()) {
+								headers[header] = value;
+							}
+
+							return {
+								status: 200,
+								headers,
+								data: {
+									status: res.status === 200 ? 0 : res.status,
+									msg: res.status === 200 ? 'ok' : body.message,
+									data: body,
+								}
+							}
+						});
+				}
+			});
+
+			window.amisScoped = amisScoped;
+		})();
+	</script>
+</body>
+
+</html>
