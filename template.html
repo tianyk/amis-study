@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>HelloWorld</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/amis@1.0.19/sdk/sdk.css">
+</head>
+
+<body>
+	<div id="root" class="app-wrapper"></div>
+
+	<script src="https://cdn.jsdelivr.net/npm/amis@1.0.19/sdk/sdk.js"></script>
+
+	<script type="text/javascript">
+		(function () {
+			let amis = amisRequire('amis/embed');
+
+			// type 必须 组件的类型 
+			// body 是一个 tpl 组件
+			let amisScoped = amis.embed('#root', {
+				type: 'page',
+				body: [{
+					type: 'form',
+					title: '搜索',
+					mode: 'inline',
+					api: {
+						method: 'get',
+						url: 'https://coursebox.xdf.cn/api/templates',
+						data: {
+							"disabled": "${disabled}",
+							"isInteractive": "${isInteractive}",
+							"questionTypes": "${questionTypes}",
+							"mame": "${name}",
+							_mode: 'dev'
+						}
+					},
+					debug: true,
+					affixFooter: true,
+					"wrapWithPanel": false,
+					"controls": [
+						{
+							type: 'select',
+							name: 'disabled',
+							label: '状态',
+							size: 'sm',
+							"options": [
+								{
+									"label": "启用",
+									"value": "false"
+								},
+								{
+									"label": "禁用",
+									"value": "true"
+								}
+							]
+						},
+						{
+							type: 'select',
+							name: 'isInteractive',
+							label: '是否可互动',
+							size: 'sm',
+							"options": [
+								{
+									"label": "是",
+									"value": "false"
+								},
+								{
+									"label": "否",
+									"value": "true"
+								}
+							]
+						},
+						{
+							type: 'select',
+							name: 'questionTypes',
+							label: '模板类型',
+							size: 'sm',
+							"options": [
+								{
+									"label": "选择",
+									"value": "选择"
+								},
+								{
+									"label": "连线",
+									"value": "连线"
+								}
+							]
+						},
+						{
+							type: 'text',
+							name: 'name',
+							size: 'sm',
+							label: '模板名称'
+						},
+						{
+							type: 'submit',
+							label: '搜索',
+							"level": "primary"
+						},
+						{
+							type: 'reset',
+							label: '取消'
+						},
+					]
+				}]
+			});
+
+			window.amisScoped = amisScoped;
+		})();
+	</script>
+</body>
+
+</html>
