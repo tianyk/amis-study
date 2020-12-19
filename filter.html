@@ -21,18 +21,36 @@
 			// body 是一个 tpl 组件
 			let amisScoped = amis.embed('#root', {
 				type: 'page',
-				initApi: {
-					method: 'get',
-					url: 'http://kg.zdrgs.com/api/users/me?_mode=dev',
-					adaptor: function (body, res) {
-						return {
-							status: res.status === 200 ? 0 : res.status,
-							msg: res.status === 200 ? 'success' : body.message,
-							data: body
-						};
-					}
+				data: {
+					now: Date.now(),
+					html: '<h2>H2</h2>',
+					raw: '<h2>H2</h2>',
+					null: null,
+					blank: '',
 				},
-				body: '我是 ${username}'
+				body: [
+					{
+						type: 'tpl',
+						tpl: 'date ${now|date:YYYY-MM-DD:x}'
+					},
+					{
+						type: 'tpl',
+						tpl: 'html ${html|html}'
+					},
+					{
+						type: 'tpl',
+						tpl: 'html ${html|raw}'
+					},
+					{
+						type: 'tpl',
+						tpl: 'default null ${null|default:-}'
+					},
+					{
+						type: 'tpl',
+						tpl: 'default \'\' ${blank|default:-}'
+					}
+
+				]
 			});
 
 			window.amisScoped = amisScoped;

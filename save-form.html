@@ -21,18 +21,22 @@
 			// body 是一个 tpl 组件
 			let amisScoped = amis.embed('#root', {
 				type: 'page',
-				initApi: {
-					method: 'get',
-					url: 'http://kg.zdrgs.com/api/users/me?_mode=dev',
-					adaptor: function (body, res) {
-						return {
-							status: res.status === 200 ? 0 : res.status,
-							msg: res.status === 200 ? 'success' : body.message,
-							data: body
-						};
-					}
-				},
-				body: '我是 ${username}'
+				body: {
+					type: 'form',
+					api: 'http://kg.zdrgs.com/api/users/login',
+					controls: [
+						{
+							type: 'text',
+							name: 'username',
+							label: '用户名'
+						},
+						{
+							type: 'password',
+							name: 'password',
+							label: '密码'
+						}
+					]
+				}
 			});
 
 			window.amisScoped = amisScoped;
