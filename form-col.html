@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>HelloWorld</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/amis@1.0.19/sdk/sdk.css">
+</head>
+
+<body>
+	<div id="root" class="app-wrapper"></div>
+
+	<script src="https://cdn.jsdelivr.net/npm/amis@1.0.19/sdk/sdk.js"></script>
+
+	<script type="text/javascript">
+		(function () {
+			let amis = amisRequire('amis/embed');
+
+			// type 必须 组件的类型 
+			// body 是一个 tpl 组件
+			let amisScoped = amis.embed('#root', {
+				type: 'page',
+				body: [{
+					"label": "点击弹框",
+					"type": "button",
+					"actionType": "dialog",
+					"dialog": {
+						"title": "弹框标题",
+						"body": {
+							// 表单类型
+							type: 'form',
+							data: {
+								f1: 'val2',
+								f2: 'val3',
+								f3: 'val4',
+								f4: 'val5',
+								f5: 'val6',
+								f6: 'val7',
+								f7: 'val8',
+								f8: 'val9',
+								f9: 'val10',
+								f10: 'val11',
+								f11: 'val12',
+								f12: 'val13',
+							},
+							"mode": "normal",
+							controls: [
+								{
+									type: 'grid',
+									columns: [
+										{
+											"xs": 6,
+											mode: 'horizontal',
+											"controls": [
+												{
+													"name": "f1",
+													"type": "static",
+													"label": "f1",
+												}
+											]
+										},
+										{
+											"xs": 6,
+											mode: 'horizontal',
+											"controls": [
+												{
+													"name": "f2",
+													"type": "static",
+													"label": "f2"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					}
+				}, {
+					type: 'tpl',
+					tpl: 'tpl'
+				}, {
+					// 分割线
+					type: 'divider'
+				}, {
+					// 表单类型
+					type: 'form',
+					data: {
+						f1: 'val2',
+						f2: 'val3',
+						f3: 'val4',
+						f4: 'val5',
+						f5: 'val6',
+						f6: 'val7',
+						f7: 'val8',
+						f8: 'val9',
+						f9: 'val10',
+						f10: 'val11',
+						f11: 'val12',
+						f12: 'val13',
+					},
+					controls: [
+						{
+							type: 'grid',
+							columns: [
+								{
+									"md": 6,
+									mode: 'horizontal',
+									"controls": [
+										{
+											"name": "f1",
+											"type": "static",
+											"label": "f1",
+										}
+									]
+								},
+								{
+									"md": 6,
+									mode: 'horizontal',
+									"controls": [
+										{
+											"name": "f2",
+											"type": "static",
+											"label": "f2"
+										}
+									]
+								}
+							]
+						}
+					]
+				}]
+			});
+
+			window.amisScoped = amisScoped;
+		})();
+	</script>
+</body>
+
+</html>

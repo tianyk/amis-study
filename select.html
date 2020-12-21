@@ -18,30 +18,28 @@
 			let amis = amisRequire('amis/embed');
 			// 通过替换下面这个配置来生成不同页面
 			let amisScoped = amis.embed('#root', {
-				type: 'page',
-				title: '表单页面',
-				body: {
-					type: 'form',
-					mode: 'horizontal',
-					api: '/saveForm',
-					controls: [
+				"type": "page",
+				"body": {
+					"type": "form",
+					"controls": [
 						{
-							label: 'Name',
-							type: 'text',
-							name: 'name'
+							"label": "选项",
+							"type": "select",
+							"name": "select",
+							"source": "http://localhost:4000/api/dict?dictName=CM-0-1-3-2"
 						},
 						{
-							label: 'Email',
-							type: 'email',
-							name: 'email'
+							type: 'select',
+							name: 'diseaseCategoryCode',
+							label: '入组病种',
+							size: 'sm',
+							source: 'http://localhost:4000/api/dict?dictName=disease_category&_mode=dev'
 						}
 					]
 				}
-			}, {}, {
-				fetcher: (url, method, data, config) => {
-					// 可以不传，用来实现 ajax 请求
-				},
 			});
+
+			window.amisScoped = amisScoped;
 		})();
 	</script>
 </body>

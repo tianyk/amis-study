@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>HelloWorld</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/amis@1.0.19/sdk/sdk.css">
+</head>
+
+<body>
+	<div id="root" class="app-wrapper"></div>
+
+	<script src="https://cdn.jsdelivr.net/npm/amis@1.0.19/sdk/sdk.js"></script>
+
+	<script type="text/javascript">
+		(function () {
+			let amis = amisRequire('amis/embed');
+
+			// type 必须 组件的类型 
+			// body 是一个 tpl 组件
+			let amisScoped = amis.embed('#root', {
+				type: 'page',
+				body: [
+					{
+						type: 'form',
+						title: '基本信息',
+						"mode": "horizontal",
+						controls: [
+							{
+								type: 'text',
+								label: '质控医师',
+								name: 'I9-S-0010',
+								required: true,
+								// size: 'lg',
+							},
+							{
+								type: 'text',
+								label: '质控护士',
+								name: 'I9-S-0011',
+								required: true,
+								// size: 'lg',
+							},
+							{
+								type: 'text',
+								label: '主治医师',
+								name: 'I9-S-0011',
+								required: true,
+								// size: 'lg',
+							},
+							{
+								type: 'text',
+								label: '责任护士',
+								name: 'I9-S-0011',
+								required: true,
+								// size: 'lg',
+							},
+							{
+								type: 'text',
+								label: '上报科室',
+								name: 'I9-S-0011',
+								required: true,
+								// size: 'lg',
+							},
+							{
+								type: 'text',
+								label: '患者病案号',
+								name: 'I9-S-0012',
+								required: true,
+								placeholder: '请输入'
+								// size: 'lg',
+							},
+							{
+								type: 'select',
+								label: '患者病案号',
+								name: 'I9-S-0099',
+								required: true,
+								placeholder: '请选择',
+								options: [
+									{
+										label: '字段A',
+										value: 'A'
+									},
+									{
+										label: '字段B',
+										value: 'B'
+									}
+								]
+								// size: 'lg',
+							},
+							{
+								type: 'select',
+								label: '患者病案号',
+								name: 'I9-S-0099',
+								required: true,
+								placeholder: '请选择',
+								options: [
+									{
+										label: '字段A',
+										value: 'A'
+									},
+									{
+										label: '字段B',
+										value: 'B'
+									}
+								]
+							},
+						]
+					}
+				]
+			});
+
+			window.amisScoped = amisScoped;
+		})();
+	</script>
+</body>
+
+</html>

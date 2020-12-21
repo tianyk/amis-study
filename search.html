@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>HelloWorld</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/amis@1.0.19/sdk/sdk.css">
+</head>
+
+<body>
+	<div id="root" class="app-wrapper"></div>
+
+	<script src="https://cdn.jsdelivr.net/npm/amis@1.0.19/sdk/sdk.js"></script>
+
+	<script type="text/javascript">
+		(function () {
+			let amis = amisRequire('amis/embed');
+
+			// type 必须 组件的类型 
+			// body 是一个 tpl 组件
+			let amisScoped = amis.embed('#root', {
+				type: 'page',
+				body: {
+					type: 'crud',
+					syncLocation: false,
+					api: {
+						method: 'get',
+						url: 'http://kg.zdrgs.com/api/drugs/paging',
+						data: {
+							_mode: 'dev',
+							page: '${page}',
+							limit: '${perPage}',
+							cName: '${cName}',
+							eName: '${eName}',
+							otc: '${otc}',
+							atc: '${atc}',
+							disabled: '${disabled}'
+						}
+					},
+					filter: {
+						title: '',
+						// debug: true,
+						mode: 'inline',
+						controls: [
+							{
+								type: 'text',
+								name: 'cName',
+								label: '中文名称',
+								size: 'sm',
+							},
+							{
+								type: 'text',
+								name: 'eName',
+								label: '英文名称',
+								size: 'sm',
+							},
+							{
+								type: 'select',
+								name: 'otc',
+								label: '是否OTC药品',
+								size: 'sm',
+								options: [
+									{
+										"label": "全部",
+										"value": ""
+									},
+									{
+										"label": "是",
+										"value": "true"
+									},
+									{
+										"label": "否",
+										"value": "false"
+									}
+								]
+							},
+							{
+								type: 'text',
+								name: 'atc',
+								label: 'ATC编码',
+								size: 'sm'
+							},
+							{
+								type: 'select',
+								name: 'disabled',
+								label: '上/下线状态',
+								size: 'sm',
+								options: [
+									{
+										"label": "全部",
+										"value": ""
+									},
+									{
+										"label": "已上线",
+										"value": "false"
+									},
+									{
+										"label": "已下线",
+										"value": "true"
+									}
+								]
+							}
+						],
+						"actions": [
+							{
+								type: 'submit',
+								label: '搜索',
+								"level": "primary"
+							},
+							{
+								type: 'reset',
+								label: '取消'
+							}
+						]
+					},
+
+					columns: [
+						{
+							"name": "id",
+							"label": "ID",
+							width: 100
+						},
+						{
+							"name": "cName",
+							"label": "中文名称",
+						},
+						{
+							"name": "otc",
+							"label": "是否OTC",
+							"type": "mapping",
+							width: 100,
+							"map": {
+								"true": "是",
+								"false": "否",
+							}
+						},
+						{
+							"name": "atc",
+							"label": "ATC",
+							width: 120,
+							"type": "tpl",
+							"tpl": "${atc | truncate:9}"
+						},
+						{
+							"name": "disabled",
+							"label": "上下线状态",
+							type: 'mapping',
+							width: 120,
+							"map": {
+								"true": "已下线",
+								"false": "已上线",
+							}
+						},
+						{
+							"type": "operation",
+							"label": "操作",
+							width: 200,
+							"buttons": [
+								{
+									"label": "上线",
+									"type": "button",
+									visibleOn: 'this.disabled === true',
+									disabledOn: 'this.locked === true',
+									"actionType": "ajax",
+									"level": "success",
+									"confirmText": "确认上线？",
+									"api": {
+										method: 'put',
+										url: 'http://kg.zdrgs.com/api/drugs/${id}/disable?_mode=dev',
+										data: {
+											disabled: false
+										}
+									},
+								},
+
+								{
+									"label": "下线",
+									"type": "button",
+									visibleOn: 'this.disabled === false',
+									disabledOn: 'this.locked === true',
+									"actionType": "ajax",
+									"level": "warning",
+									"confirmText": "确认下线？",
+									"api": {
+										method: 'put',
+										url: 'http://kg.zdrgs.com/api/drugs/${id}/disable?_mode=dev',
+										data: {
+											disabled: true
+										}
+									},
+								},
+
+								{
+									"label": "预览",
+									"type": "button",
+									"actionType": "url",
+									"level": "info",
+									"url": "http://kg.zdrgs.com/drugs/${id}?theme=simple"
+								},
+
+								{
+									"label": "删除",
+									"type": "button",
+									disabledOn: 'this.locked === true',
+									"actionType": "ajax",
+									"level": "danger",
+									"confirmText": "确认要删除？",
+									"api": 'delete:http://kg.zdrgs.com/api/drugs/${id}?_mode=dev'
+								},
+
+								{
+									"label": "编辑",
+									"type": "button",
+									disabledOn: 'this.locked === true',
+									"actionType": "url",
+									"level": "info",
+									"url": "http://kg.zdrgs.com/console/#/zswh/edit/drug?id=${id}"
+								},
+
+
+							]
+						}
+					]
+				}
+			}, {}, {
+				fetcher: ({ url, method = 'get', data, config }) => {
+
+					console.log(url, method, data, config)
+					return fetch(url, {
+						method: method.toUpperCase(),
+						headers: {
+							accept: 'application/json',
+							'content-type': 'application/json'
+						},
+						body: (method !== 'get' && data) ? JSON.stringify(data) : undefined,
+					})
+						.then(res => {
+							const contentType = res.headers.get('content-type');
+							return Promise.all([
+								Promise.resolve(res),
+								/application\/json/.test(contentType) ? res.json() : res.text()
+							]);
+						})
+						.then(([res, body]) => {
+							const headers = {};
+							for (const [header, value] of res.headers.entries()) {
+								headers[header] = value;
+							}
+
+							return {
+								status: 200,
+								headers,
+								data: {
+									status: res.status === 200 ? 0 : res.status,
+									msg: res.status === 200 ? 'success' : body.message,
+									data: {
+										items: body.dataset,
+										total: body.total
+									}
+								}
+							}
+						});
+				}
+			});
+
+			window.amisScoped = amisScoped;
+		})();
+	</script>
+</body>
+
+</html>
