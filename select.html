@@ -5,13 +5,13 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>HelloWorld</title>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/amis@1.0.19/sdk/sdk.css">
+	<link rel="stylesheet" href="sdk/cxd.css">
 </head>
 
 <body>
 	<div id="root" class="app-wrapper"></div>
 
-	<script src="https://cdn.jsdelivr.net/npm/amis@1.0.19/sdk/sdk.js"></script>
+	<script src="sdk/sdk.js"></script>
 
 	<script type="text/javascript">
 		(function () {
@@ -21,19 +21,48 @@
 				"type": "page",
 				"body": {
 					"type": "form",
+					debug: true,
+					initApi: {
+						method: 'get',
+						url: 'http://localhost:4000/api/users/me?_mode=dev',
+						adaptor: function (body) {
+							console.log(body);
+							const data = body.data;
+							data.roles = data.roles.map(({ code }) => code).join(',')
+							return body;
+						}
+					},
 					"controls": [
 						{
 							"label": "选项",
 							"type": "select",
 							"name": "select",
-							"source": "http://localhost:4000/api/dict?dictName=CM-0-1-3-2"
+							size: 'sm',
+							"source": "http://localhost:4000/api/dict?dictName=CM-0-1-3-2&diseaseCategoryCode=HF"
 						},
 						{
 							type: 'select',
 							name: 'diseaseCategoryCode',
 							label: '入组病种',
 							size: 'sm',
-							source: 'http://localhost:4000/api/dict?dictName=disease_category&_mode=dev'
+							source: 'http://localhost:4000/api/dict?dictName=sdqc_disease_category&_mode=dev'
+						},
+						{
+							type: 'select',
+							name: 'diseaseCategoryCode2',
+							label: '入组病种',
+							searchable: true,
+							size: 'md',
+							source: 'http://localhost:4000/api/dict?dictName=HF-8-4-4&diseaseCategoryCode=HF'
+						},
+						{
+							type: 'select',
+							name: 'roles',
+							label: '角色',
+							"multiple": true,
+							searchable: true,
+							size: 'md',
+							source: 'http://localhost:4000/api/dict?dictName=sdqc_roles&_mode=dev'
 						}
 					]
 				}
