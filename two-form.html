@@ -53,6 +53,24 @@
 										}
 									}
 								]
+							},
+							{
+								type: 'form',
+								title: '表单2',
+								controls: [
+									{
+										type: 'text',
+										label: 'H2',
+										name: 'h2',
+										required: true,
+									},
+									{
+										type: 'custom',
+										onUpdate: (dom, data, prevData, props) => {
+											console.log('data', JSON.stringify(data))
+										}
+									}
+								]
 							}
 						]
 					},

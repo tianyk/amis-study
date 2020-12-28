@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>HelloWorld</title>
+	<link rel="stylesheet" href="sdk/cxd.css">
+</head>
+
+<body>
+	<div id="root" class="app-wrapper"></div>
+
+	<script src="sdk/sdk.js"></script>
+
+	<script type="text/javascript">
+		(function () {
+			let amis = amisRequire('amis/embed');
+
+			// type 必须 组件的类型 
+			// body 是一个 tpl 组件
+			let amisScoped = amis.embed('#root', {
+				"type": "page",
+				name: 'page',
+				"body": {
+					"type": "form",
+					name: 'form',
+					"api": "https://houtai.baidu.com/api/mock2/form/saveForm",
+					"controls": [
+						{
+							"type": "text",
+							"label": "常规",
+							"name": "text",
+							"required": true
+						}
+					]
+				}
+			});
+
+			window.amisScoped = amisScoped;
+		})();
+	</script>
+
+</body>
+
+</html>

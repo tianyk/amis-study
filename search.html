@@ -253,7 +253,7 @@
 								headers,
 								data: {
 									status: res.status === 200 ? 0 : res.status,
-									msg: res.status === 200 ? 'success' : body.message,
+									msg: res.status === 200 ? '操作成功' : body.message,
 									data: {
 										items: body.dataset,
 										total: body.total
