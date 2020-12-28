@@ -37,6 +37,10 @@
 				}
 			});
 
+			amisScoped.getComponents()[0].props.env.notify('error', '表单验证失败，请仔细检查');
+			amisScoped.getComponentByName('page.form').validate().then(console.log);
+			amisScoped.getComponentByName('page.form').getValues();
+
 			window.amisScoped = amisScoped;
 		})();
 	</script>
