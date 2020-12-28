@@ -37,50 +37,20 @@
 						body: [
 							{
 								type: 'form',
-								name: 'form1',
-								title: 'custom 组件',
-								controls: [
-									{
-										name: 'email',
-										label: '邮箱',
-										type: 'text',
-										value: 'yongketian@gmail.com'
-									},
-									{
-										name: 'username',
-										label: '用户名',
-										type: 'text',
-										value: 'xiaomign'
-									},
-									{
-										type: 'custom',
-										// name: 'form1-value',
-										// onMount: (dom, value, onChange, props) => {
-										// 	console.log(dom, value, onChange, props)
-										// 	const button = document.createElement('button');
-										// 	button.innerText = '点击修改';
-										// 	button.onclick = event => {
-										// 		onChange('new');
-										// 		event.preventDefault();
-										// 	};
-										// 	dom.appendChild(button);
-										// },
-										onUpdate: (dom, data, prevData, props) => {
-											console.log(dom)
-											console.log('data', data, prevData)
-										}
-									}
-								]
-							},
-							{
-								type: 'form',
 								title: '表单2',
 								actions: [],
 								controls: [
 									{
 										type: 'text',
 										label: 'H2',
-										name: 'h2'
+										name: 'h2',
+										required: true,
+									},
+									{
+										type: 'custom',
+										onUpdate: (dom, data, prevData, props) => {
+											console.log('data', JSON.stringify(data))
+										}
 									}
 								]
 							}
