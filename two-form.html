@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>HelloWorld</title>
+	<link rel="stylesheet" href="sdk/cxd.css">
+</head>
+
+<body>
+	<div id="root" class="app-wrapper"></div>
+
+	<script src="sdk/sdk.js"></script>
+
+	<script type="text/javascript">
+		(function () {
+			let amis = amisRequire('amis/embed');
+
+			// type 必须 组件的类型 
+			// body 是一个 tpl 组件
+			let amisScoped = amis.embed('#root', {
+				"type": "page",
+				name: 'page',
+				debug: true,
+				data: {
+					h1: 'h1',
+					h2: '',
+					h3: '',
+					h4: ''
+				},
+				"body": [
+					{
+						"type": "collapse",
+						headingClassName: 'report-collapse-header',
+						"title": "基本信息",
+						body: [
+							{
+								type: 'form',
+								name: 'form1',
+								title: 'custom 组件',
+								controls: [
+									{
+										name: 'email',
+										label: '邮箱',
+										type: 'text',
+										value: 'yongketian@gmail.com'
+									},
+									{
+										name: 'username',
+										label: '用户名',
+										type: 'text',
+										value: 'xiaomign'
+									},
+									{
+										type: 'custom',
+										// name: 'form1-value',
+										// onMount: (dom, value, onChange, props) => {
+										// 	console.log(dom, value, onChange, props)
+										// 	const button = document.createElement('button');
+										// 	button.innerText = '点击修改';
+										// 	button.onclick = event => {
+										// 		onChange('new');
+										// 		event.preventDefault();
+										// 	};
+										// 	dom.appendChild(button);
+										// },
+										onUpdate: (dom, data, prevData, props) => {
+											console.log(dom)
+											console.log('data', data, prevData)
+										}
+									}
+								]
+							},
+							{
+								type: 'form',
+								title: '表单2',
+								actions: [],
+								controls: [
+									{
+										type: 'text',
+										label: 'H2',
+										name: 'h2'
+									}
+								]
+							}
+						]
+					},
+					{
+						"type": "collapse",
+						headingClassName: 'report-collapse-header',
+						"title": "基本信息2",
+						body: [
+							{
+								type: 'form',
+								title: '表单3',
+								actions: [],
+								controls: [
+									{
+										type: 'text',
+										label: 'H3',
+										name: 'h3'
+									}
+								]
+							},
+							{
+								type: 'form',
+								title: '表单4',
+								actions: [],
+								controls: [
+									{
+										type: 'text',
+										label: 'H4',
+										name: 'h4'
+									}
+								]
+							}
+						]
+					},
+					{
+						type: 'form',
+						debug: true,
+						wrapWithPanel: false,
+						"controls": [
+							{
+								type: 'text',
+								label: 'H4',
+								name: 'h4'
+							},
+							{
+								type: 'text',
+								label: 'H3',
+								name: 'h3'
+							},
+							{
+								type: 'text',
+								label: 'H2',
+								name: 'h2'
+							},
+							{
+								type: 'text',
+								label: 'H1',
+								name: 'h1'
+							},
+							{
+								"type": "submit",
+								"label": "登录"
+							},
+						]
+					},
+					{
+						"type": "form",
+						"debug": true,
+						"controls": [
+							{
+								"type": "form",
+								"name": "form",
+								"label": "子Form",
+								"btnLabel": "设置子表单",
+								"form": {
+									"title": "配置子表单",
+									"controls": [
+										{
+											"name": "a",
+											"label": "A",
+											"type": "text"
+										},
+										{
+											"name": "b",
+											"label": "B",
+											"type": "text"
+										}
+									]
+								}
+							}
+						]
+					}
+				]
+			});
+
+			window.amisScoped = amisScoped;
+		})();
+	</script>
+
+</body>
+
+</html>

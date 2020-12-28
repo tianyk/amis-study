@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>HelloWorld</title>
+	<link rel="stylesheet" href="sdk/cxd.css">
+</head>
+
+<body>
+	<div id="root" class="app-wrapper"></div>
+
+	<script src="sdk/sdk.js"></script>
+
+	<script type="text/javascript">
+		(function () {
+			let amis = amisRequire('amis/embed');
+
+			// type 必须 组件的类型 
+			// body 是一个 tpl 组件
+			let amisScoped = amis.embed('#root', {
+				"type": "page",
+				"body": {
+					"type": "form",
+					"controls": [
+						{
+							"type": "number",
+							"name": "A-1",
+							"label": "A"
+						},
+						{
+							"type": "number",
+							"name": "B-1",
+							"label": "B"
+						},
+						{
+							"type": "number",
+							"name": "sum",
+							"label": "和",
+							"disabled": true,
+							"description": "自动计算 A + B"
+						},
+						{
+							"type": "formula",
+							"name": "sum",
+							"value": 0,
+							"formula": `(function(data) {
+								var result = data['A-1'] + data['B-1'];
+								if (isFinite(result)) return result;
+								return null;
+							}.bind(this))(data);`
+						}
+					]
+				}
+			});
+
+			window.amisScoped = amisScoped;
+		})();
+	</script>
+
+	<script>
+
+		function evalJS(js, data) {
+			/* jshint evil:true */
+			try {
+				const fn = new Function(
+					'data',
+					'utils',
+					`with(data) {${/^\s*return\b/.test(js) ? '' : 'return '}${js};}`
+				);
+				console.log(`with(data) {${/^\s*return\b/.test(js) ? '' : 'return '}${js};}`);
+				data = data || {};
+				return fn.call(data, data);
+			} catch (e) {
+				console.warn(e);
+				return null;
+			}
+		}
+
+		evalJS(`
+		this["a"] + this["b"]
+		`, { a: 1, b: 2 });
+	</script>
+</body>
+
+</html>
