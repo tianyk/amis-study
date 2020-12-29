@@ -6,15 +6,46 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>HelloWorld</title>
 	<link rel="stylesheet" href="sdk/cxd.css">
+	<style>
+		.sdqc-report-form-footer {
+			padding: 10px 15px;
+			text-align: center;
+		}
+
+		.sdqc-report-form-footer button {
+			margin-left: 10px;
+		}
+	</style>
 </head>
 
 <body>
 	<div id="root" class="app-wrapper"></div>
 
 	<script src="sdk/sdk.js"></script>
+	<script crossorigin="anonymous" integrity="sha384-rY/jv8mMhqDabXSo+UCggqKtdmBfd3qC2/KvyTDNQ6PcUJXaxK1tMepoQda4g5vB"
+		src="https://lib.baomitu.com/jquery/2.2.4/jquery.min.js"></script>
+
+
 
 	<script type="text/javascript">
 		(function () {
+			function getComponents(scoped) {
+				const components = [];
+				
+				const coms = typeof scoped.getComponents === 'function' ? scoped.getComponents() : [];
+				components.push(...coms);
+
+				coms.forEach(function(com) {
+					if (com.context) {
+						const coms = getComponents(com.context);
+						components.push(...coms);
+					}
+				});
+				
+				return components;
+			}
+
+
 			let amis = amisRequire('amis/embed');
 
 			// type 必须 组件的类型 
@@ -32,11 +63,13 @@
 				"body": [
 					{
 						"type": "collapse",
+						name: 'collapse1',
 						headingClassName: 'report-collapse-header',
 						"title": "基本信息",
 						body: [
 							{
 								type: 'form',
+								name: 'form1',
 								title: '表单2',
 								actions: [],
 								controls: [
@@ -162,6 +195,28 @@
 								}
 							}
 						]
+					},
+					{
+						type: 'custom',
+						className: 'sdqc-report-form-footer',
+						onMount: (dom, value, onChange, props) => {
+							const submit = $(`<button type="button" class="a-Button a-Button--primary"><span>点击修改</span></button>`);
+							const save = $(`<button type="button" class="a-Button a-Button--default"><span>保存</span></button>`);
+
+							console.log(props);
+							window.props = props;
+
+							save.appendTo(dom);
+							submit.appendTo(dom);
+							submit.on('click', function (evt) {
+								amisScoped.getComponentByName('page.form1').validate().then((valid) => {
+									if (!valid) props.env.notify('error', '表单验证失败，请仔细检查');
+
+									console.log(amisScoped.getComponentByName('page.form1').getValues());
+								})
+								evt.preventDefault();
+							});
+						}
 					}
 				]
 			});
