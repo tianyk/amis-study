@@ -6,11 +6,24 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>HelloWorld</title>
 	<link rel="stylesheet" href="sdk/cxd.css">
+
+	<style>
+		.sdqc-report-form-footer {
+			padding: 10px 15px;
+			text-align: center;
+		}
+
+		.sdqc-report-form-footer button {
+			margin-left: 10px;
+		}
+	</style>
 </head>
 
 <body>
 	<div id="root" class="app-wrapper"></div>
 
+	<script crossorigin="anonymous" integrity="sha384-rY/jv8mMhqDabXSo+UCggqKtdmBfd3qC2/KvyTDNQ6PcUJXaxK1tMepoQda4g5vB"
+		src="https://lib.baomitu.com/jquery/2.2.4/jquery.min.js"></script>
 	<script src="sdk/sdk.js"></script>
 
 	<script type="text/javascript">
@@ -22,24 +35,84 @@
 			let amisScoped = amis.embed('#root', {
 				"type": "page",
 				name: 'page',
-				"body": {
-					"type": "form",
-					name: 'form',
-					"api": "https://houtai.baidu.com/api/mock2/form/saveForm",
-					"controls": [
-						{
-							"type": "text",
-							"label": "常规",
-							"name": "text",
-							"required": true
-						}
-					]
-				}
-			});
+				"body": [
+					{
+						"type": "form",
+						name: 'form',
+						"api": "https://houtai.baidu.com/api/mock2/form/saveForm",
+						actions: [
+							{
+								type: 'action',
+								actionType: 'submit',
+								"label": "提交",
+								"level": "primary"
+							},
+							{
+								type: 'action',
+								"label": "保存",
+							},
+						],
+						"controls": [
+							{
+								"type": "text",
+								"label": "常规",
+								"name": "text",
+								validateOnChange: true,
+								"required": true
+							},
+							{
+								"type": "text",
+								"label": "常规",
+								"name": "text2",
+								"required": true,
+								validateOnChange: true,
+								"validations": {
+									"isNumeric": true
+								}
+							},
+							{
+								"type": "text",
+								"label": "常规",
+								"name": "text3",
+								"required": true,
+								visibleOn: "this.text2 > 2",
+								validateOnChange: true,
+								"validations": {
+									"isNumeric": true
+								}
+							}
+						]
+					},
+					{
+						type: 'custom',
+						className: 'sdqc-report-form-footer',
+						onMount: (dom, value, onChange, props) => {
+							const submit = $(`<button type="button" class="a-Button a-Button--primary"><span>点击修改</span></button>`);
+							const save = $(`<button type="button" class="a-Button a-Button--default"><span>保存</span></button>`);
 
-			amisScoped.getComponents()[0].props.env.notify('error', '表单验证失败，请仔细检查');
-			amisScoped.getComponentByName('page.form').validate().then(console.log);
-			amisScoped.getComponentByName('page.form').getValues();
+							console.log(props);
+							window.props = props;
+
+							save.appendTo(dom);
+							submit.appendTo(dom);
+							submit.on('click', function (evt) {
+								amisScoped.getComponentByName('page.form').validate().then((valid) => {
+									if (!valid) props.env.notify('error', '表单验证失败，请仔细检查');
+
+									console.log(amisScoped.getComponentByName('page.form').getValues())
+
+								})
+								evt.preventDefault();
+							});
+						}
+					}
+				]
+			}, {});
+
+
+			// amisScoped.getComponents()[0].props.env.notify('error', '表单验证失败，请仔细检查');
+			// amisScoped.getComponentByName('page.form').validate().then(console.log);
+			// amisScoped.getComponentByName('page.form').getValues();
 
 			window.amisScoped = amisScoped;
 		})();
