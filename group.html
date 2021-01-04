@@ -20,94 +20,86 @@
 			// type 必须 组件的类型 
 			// body 是一个 tpl 组件
 			let amisScoped = amis.embed('#root', {
-				type: 'page',
-				body: [
-					{
-						type: 'form',
-						title: '基本信息',
-						"mode": "horizontal",
-						controls: [
-							{
-								type: 'text',
-								label: '质控医师',
-								name: 'I9-S-0010',
-								required: true,
-								// size: 'lg',
-							},
-							{
-								type: 'text',
-								label: '质控护士',
-								name: 'I9-S-0011',
-								required: true,
-								// size: 'lg',
-							},
-							{
-								type: 'text',
-								label: '主治医师',
-								name: 'I9-S-0011',
-								required: true,
-								// size: 'lg',
-							},
-							{
-								type: 'text',
-								label: '责任护士',
-								name: 'I9-S-0011',
-								required: true,
-								// size: 'lg',
-							},
-							{
-								type: 'text',
-								label: '上报科室',
-								name: 'I9-S-0011',
-								required: true,
-								// size: 'lg',
-							},
-							{
-								type: 'text',
-								label: '患者病案号',
-								name: 'I9-S-0012',
-								required: true,
-								placeholder: '请输入'
-								// size: 'lg',
-							},
-							{
-								type: 'select',
-								label: '患者病案号',
-								name: 'I9-S-0099',
-								required: true,
-								placeholder: '请选择',
-								options: [
-									{
-										label: '字段A',
-										value: 'A'
-									},
-									{
-										label: '字段B',
-										value: 'B'
-									}
-								]
-								// size: 'lg',
-							},
-							{
-								type: 'select',
-								label: '患者病案号',
-								name: 'I9-S-0099',
-								required: true,
-								placeholder: '请选择',
-								options: [
-									{
-										label: '字段A',
-										value: 'A'
-									},
-									{
-										label: '字段B',
-										value: 'B'
-									}
-								]
-							},
-						]
-					}
-				]
+				"type": "page",
+				"body": {
+					"type": "form",
+					"mode": "horizontal",
+
+					horizontal: {
+						left: 5,
+						right: 7,
+						offset: 5
+					},
+
+					"controls": [
+						{
+							"type": "radios",
+							"name": "YN",
+							"label": "是否",
+							options: [
+								{
+									label: '是',
+									value: 'y'
+								},
+								{
+									label: '否',
+									value: 'n'
+								}
+							]
+						},
+						{
+							"type": "group",
+							// vertical 表单项 垂直排版
+							direction: 'vertical',
+							visibleOn: 'this.YN === "y"',
+							"controls": [
+								{
+									"type": "number",
+									"name": "height",
+									"label": '身高'
+								},
+								{
+									"type": "number",
+									"name": "weight",
+									"label": '体重'
+								},
+								{
+									"type": "number",
+									"name": "age",
+									"label": '年龄'
+								}
+							]
+						},
+						{
+							"type": "group",
+							direction: 'vertical',
+							visibleOn: 'this.YN === "n"',
+							"controls": [
+								{
+									"type": "number",
+									"name": "number",
+									"label": '数字'
+								},
+								{
+									"type": "select",
+									"name": "select",
+									"label": '城市',
+									options: [
+										{
+											label: '北京',
+											value: 'beijing'
+										},
+										{
+											label: '上海',
+											value: 'shanghai'
+										}
+									]
+								},
+							]
+						}
+					]
+
+				}
 			});
 
 			window.amisScoped = amisScoped;

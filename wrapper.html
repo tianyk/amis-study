@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>HelloWorld</title>
+	<link rel="stylesheet" href="http://sdqc.zdrgs.com/library/normalize/4.2.0/normalize.min.css">
+
+	<link rel="stylesheet" href="http://sdqc.zdrgs.com/library/amis/9abe783/cxd-ie11.css">
+	<link rel="stylesheet" href="http://sdqc.zdrgs.com/style/amis.less">
+	<link rel="stylesheet" href="http://sdqc.zdrgs.com/style/core.less">
+
+	<script src="http://sdqc.zdrgs.com/library/jquery/1.9.1/jquery.min.js"></script>
+	<script src="http://sdqc.zdrgs.com/library/regenerator-runtime/0.13.7/runtime.js"></script>
+	<script src="http://sdqc.zdrgs.com/library/amis/9abe783/sdk.js"></script>
+
+	<style>
+		html,
+		body,
+		#root {
+			height: 100%;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="root" class="app-wrapper"></div>
+
+	<script type="text/javascript">
+		(function () {
+			let amis = amisRequire('amis/embed');
+
+			// type 必须 组件的类型 
+			// body 是一个 tpl 组件
+			let amisScoped = amis.embed('#root', {
+				type: 'form',
+				debug: true,
+				trimValues: true,
+				"title": "适用的ICD-10编码与疾病名称",
+				
+				actions: [],
+				"mode": "horizontal",
+				"horizontal": {
+					"left": 5,
+					"right": 7,
+					"offset": 5
+				},
+				controls: [
+					{
+						type: 'number',
+						name: 'age',
+						label: '年龄'
+					},
+					{
+						// 用一个 service 容器包起来
+						"type": "service",
+						visibleOn: "this.age > 10",
+						"controls": [
+							{
+								type: 'text',
+								name: 'text1',
+								label: 'text1'
+							},
+							{
+								type: 'text',
+								name: 'text2',
+								label: 'text2'
+							},
+						],
+					}
+				]
+			});
+
+			window.amisScoped = amisScoped;
+		})();
+	</script>
+</body>
+
+</html>
