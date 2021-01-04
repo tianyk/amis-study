@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>HelloWorld</title>
+	<link rel="stylesheet" href="http://sdqc.zdrgs.com/library/normalize/4.2.0/normalize.min.css">
+
+	<link rel="stylesheet" href="http://sdqc.zdrgs.com/library/amis/9abe783/cxd-ie11.css">
+	<link rel="stylesheet" href="http://sdqc.zdrgs.com/style/amis.less">
+	<link rel="stylesheet" href="http://sdqc.zdrgs.com/style/core.less">
+
+	<script src="http://sdqc.zdrgs.com/library/jquery/1.9.1/jquery.min.js"></script>
+	<script src="http://sdqc.zdrgs.com/library/regenerator-runtime/0.13.7/runtime.js"></script>
+	<script src="http://sdqc.zdrgs.com/library/amis/9abe783/sdk.js"></script>
+
+	<style>
+		html,
+		body,
+		#root {
+			height: 100%;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="root" class="app-wrapper"></div>
+
+	<script type="text/javascript">
+		(function () {
+			let amis = amisRequire('amis/embed');
+
+			// type 必须 组件的类型 
+			// body 是一个 tpl 组件
+			let amisScoped = amis.embed('#root', {
+				type: 'form',
+				onValidate: function (values, form) {
+					console.log(values, form)
+					return {
+						date1: '错误'
+					}
+				},
+				controls: [
+					{
+						type: 'text',
+						name: 'text1',
+						label: 'text1',
+						validateOnChange: true,
+						// validate: function (values, value) {
+						// 	console.log(values, value)
+						// 	console.log('yyyys')
+						// 	return '错误Lee溜了溜了';
+						// },
+					},
+					{
+						type: 'datetime',
+						name: 'date1',
+						label: '时间1',
+						validateOnChange: true,
+						// validate: function (values, value) {
+						// 	console.log()
+						// 	console.log('xxx')
+						// 	return false;
+						// },
+					},
+					{
+						type: 'datetime',
+						name: 'date2',
+						label: '时间2'
+					}
+				]
+			});
+
+			window.amisScoped = amisScoped;
+		})();
+	</script>
+</body>
+
+</html>

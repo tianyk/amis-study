@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>HelloWorld</title>
+	<link rel="stylesheet" href="http://sdqc.zdrgs.com/library/normalize/4.2.0/normalize.min.css">
+
+	<link rel="stylesheet" href="http://sdqc.zdrgs.com/library/amis/9abe783/cxd-ie11.css">
+	<link rel="stylesheet" href="http://sdqc.zdrgs.com/style/amis.less">
+	<link rel="stylesheet" href="http://sdqc.zdrgs.com/style/core.less">
+
+	<script src="http://sdqc.zdrgs.com/library/jquery/1.9.1/jquery.min.js"></script>
+	<script src="http://sdqc.zdrgs.com/library/regenerator-runtime/0.13.7/runtime.js"></script>
+	<script src="http://sdqc.zdrgs.com/library/amis/9abe783/sdk.js"></script>
+
+	<style>
+		html,
+		body,
+		#root {
+			height: 100%;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="amis" class="app-wrapper"></div>
+
+	<script type="text/javascript">
+		(function () {
+			let amis = amisRequire('amis/embed');
+
+			// type 必须 组件的类型 
+			// body 是一个 tpl 组件
+			let amisScoped = amis.embed('#amis', {
+				debug: true,
+				type: 'form',
+				"mode": "horizontal",
+				actions: [],
+				"horizontal": {
+					"left": 5,
+					"right": 7,
+					"offset": 5
+				},
+				controls: [
+					{
+						"type": "fieldSet",
+						headingClassName: 'report-collapse-header',
+						"title": "STK-1 患者入院病情评估完成",
+						"collapsable": true,
+						controls: [
+							{
+								"type": "panel",
+								"title": "医师接诊时间：",
+								"controls": [
+									{
+										"type": "checkboxes",
+										"label": "急诊医师接诊日期时间是否确定：",
+										"name": "STK-1-1-1-1",
+										"options": [],
+										"joinValues": false,
+										"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=STK-1-1-1-1&diseaseCategoryCode=STK",
+										"extractValue": true,
+										"mode": "horizontal"
+									},
+									{
+										"type": "datetime",
+										"label": "急诊医师接诊日期时间",
+										"name": "STK-1-1-1-2",
+										"format": "YYYY-MM-DD HH:mm",
+										"visibleOn": "!Array.isArray(this[\"STK-1-1-1-1\"]) || this[\"STK-1-1-1-1\"][0] !== \"UTD\"",
+										"visible": "",
+										"validations": {},
+										"validationErrors": {},
+										"validateOnChange": true,
+										"required": false,
+										"remark": null,
+										"labelRemark": null,
+										"mode": "horizontal",
+										"inputFormat": "YYYY-MM-DD HH:mm"
+									}
+								],
+								"submitText": "123",
+								"affixFooter": false,
+								"actions": []
+							},
+							{
+								"type": "panel",
+								"title": "患者基础信息：",
+								"controls": [
+									{
+										"type": "number",
+										"label": "呼吸(次/分)：",
+										"name": "STK-1-1-4",
+										"description": "",
+										"mode": "horizontal",
+										"size": "",
+										"validations": {},
+										"validationErrors": {
+											"isNumeric": "呼吸范围为10-40"
+										},
+										"required": true
+									},
+									{
+										"type": "number",
+										"label": "脉搏(次/分)：",
+										"name": "STK-1-1-5",
+										"required": true,
+										"mode": "horizontal",
+										"validationErrors": {
+											"isNumeric": "脉搏范围为30-200"
+										}
+									},
+									{
+										"type": "number",
+										"label": "收缩压(mmHg)：",
+										"name": "STK-1-1-6",
+										"mode": "horizontal",
+										"validationErrors": {
+											"isNumeric": "收缩压范围为40-300"
+										},
+										"required": true
+									},
+									{
+										"type": "number",
+										"label": "舒张压(mmHg)：",
+										"name": "STK-1-1-7",
+										"validationErrors": {
+											"isNumeric": "舒张压范围为30-200"
+										},
+										"mode": "horizontal",
+										"required": true
+									}
+								],
+								"affixFooter": false
+							},
+							{
+								"type": "panel",
+								"title": "急诊就诊10分钟内神经功能缺损NIHSS评估：",
+								"controls": [
+									{
+										"type": "radios",
+										"label": "急诊后首次评估还是入院后首次评估：",
+										"name": "STK-1-2-1",
+										"options": [],
+										"joinValues": false,
+										"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=STK-1-2-1&diseaseCategoryCode=STK",
+										"columnsCount": 2,
+										"required": true,
+										"mode": "horizontal",
+										"extractValue": true
+									},
+									{
+										"type": "panel",
+										"title": "急诊首次评估时间与评估分值：",
+										"controls": [
+											{
+												"type": "radios",
+												"label": "急诊首次实施神经功能缺损NIHSS评估：",
+												"name": "STK-1-2-1-1",
+												"options": [],
+												"mode": "horizontal",
+												"visibleOn": "this[\"STK-1-2-1\"]== \"a\"",
+												"joinValues": false,
+												"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=STK-1-2-1-1&diseaseCategoryCode=STK",
+												"extractValue": true
+											},
+											{
+												"type": "datetime",
+												"label": "急诊首次评估日期时间：",
+												"name": "STK-1-2-1-2-1",
+												"visibleOn": "this[\"STK-1-2-1-1\"] == \"y\"",
+												"format": "YYYY-MM-DD HH:mm",
+												"mode": "horizontal",
+												"inputFormat": "YYYY-MM-DD HH:mm"
+											},
+											{
+												"type": "number",
+												"label": "实施神经功能缺损NIHSS评估分值：",
+												"name": "STK-1-2-1-3-1",
+												"visibleOn": "this[\"STK-1-2-1-1\"] == \"y\"",
+												"mode": "horizontal"
+											}
+										],
+										"actions": [],
+										"visibleOn": "this[\"STK-1-2-1\"]== \"a\""
+									},
+									{
+										"type": "panel",
+										"title": "入院后首次评估时间与评估分值：",
+										"controls": [
+											{
+												"type": "radios",
+												"label": "入院后首次实施神经功能缺损NIHSS评估：",
+												"name": "STK-1-2-2-1",
+												"options": [],
+												"mode": "horizontal",
+												"visibleOn": "this[\"STK-1-2-1\"]== \"b\"",
+												"joinValues": false,
+												"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=STK-1-2-2-1&diseaseCategoryCode=STK",
+												"extractValue": true,
+												"columnsCount": 2
+											},
+											{
+												"type": "datetime",
+												"label": "入院后首次评估日期时间：",
+												"name": "STK-1-2-2-2-1",
+												"format": "YYYY-MM-DD HH:mm",
+												"visibleOn": "this[\"STK-1-2-2-1\"]== \"y\"",
+												"mode": "horizontal",
+												"inputFormat": "YYYY-MM-DD HH:mm"
+											},
+											{
+												"type": "number",
+												"label": "实施神经功能缺损NIHSS评估分值：",
+												"name": "STK-1-2-2-3-1",
+												"mode": "horizontal",
+												"visibleOn": "this[\"STK-1-2-2-1\"]== \"y\""
+											}
+										],
+										"visibleOn": "this[\"STK-1-2-1\"]== \"b\""
+									}
+								],
+								"affixFooter": false
+							},
+							{
+								"type": "panel",
+								"title": "急诊就诊30分钟内首次头部影像学检查：",
+								"controls": [
+									{
+										"type": "radios",
+										"label": "是否实施首次头部影像学检查：",
+										"name": "STK-1-3-1",
+										"options": [],
+										"mode": "horizontal",
+										"joinValues": false,
+										"columnsCount": 2,
+										"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=STK-1-3-1&diseaseCategoryCode=STK",
+										"required": true,
+										"extractValue": true
+									},
+									{
+										"type": "checkboxes",
+										"label": "头部影像学检查项目：",
+										"name": "STK-1-3-2",
+										"options": [],
+										"mode": "horizontal",
+										"joinValues": false,
+										"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=STK-1-3-2&diseaseCategoryCode=STK",
+										"visibleOn": "this[\"STK-1-3-1\"] == \"y\"",
+										"extractValue": true
+									}
+								],
+								"affixFooter": false,
+								"actions": []
+							},
+							{
+								"type": "panel",
+								"title": "急诊就诊45分钟内完成临床实验室（血生化、血细胞计数、凝血功能）诊断：",
+								"controls": [
+									{
+										"type": "checkboxes",
+										"label": "全血细胞计数：",
+										"name": "STK-1-4-1",
+										"options": [],
+										"joinValues": false,
+										"mode": "horizontal",
+										"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=STK-1-4-1&diseaseCategoryCode=STK",
+										"required": true,
+										"extractValue": true
+									},
+									{
+										"type": "number",
+										"label": "红血球计数RBC检测值：",
+										"name": "STK-1-4-1-3",
+										"mode": "horizontal",
+										"visibleOn": "Array.isArray(this[\"STK-1-4-1\"]) && this[\"STK-1-4-1\"].indexOf(\"a\") !== -1"
+									},
+									{
+										"type": "number",
+										"label": "白细胞计数WBC检测值：",
+										"name": "STK-1-4-1-4",
+										"mode": "horizontal",
+										"visibleOn": "Array.isArray(this[\"STK-1-4-1\"]) && this[\"STK-1-4-1\"].indexOf(\"b\") !== -1"
+									},
+									{
+										"type": "number",
+										"label": "血小板PLT检测值(10E9/L)：",
+										"name": "STK-1-4-1-5",
+										"mode": "horizontal",
+										"visibleOn": "Array.isArray(this[\"STK-1-4-1\"]) && this[\"STK-1-4-1\"].indexOf(\"c\") !== -1"
+									},
+									{
+										"type": "checkboxes",
+										"label": "急诊或入院后首次全血细胞计数报告日期时间：",
+										"name": "STK-1-4-1-2",
+										"options": [],
+										"joinValues": false,
+										"mode": "horizontal",
+										"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=STK-1-4-1-2&diseaseCategoryCode=STK",
+										"required": false,
+										"extractValue": true
+									},
+									{
+										"type": "datetime",
+										"label": "急诊或入院后首次全血细胞计数报告日期时间：",
+										"name": "STK-1-4-1-1-1",
+										"mode": "horizontal",
+										"visibleOn": "!Array.isArray(this[\"STK-1-4-1-2\"]) || this[\"STK-1-4-1-2\"][0] !== \"y\""
+									},
+									{
+										"type": "checkboxes",
+										"label": "凝血功能检查项目：",
+										"name": "STK-1-4-2-1",
+										"options": [],
+										"joinValues": false,
+										"mode": "horizontal",
+										"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=STK-1-4-2-1&diseaseCategoryCode=STK",
+										"required": true,
+										"extractValue": true
+									},
+									{
+										"type": "checkboxes",
+										"label": "报告日期时间是否确定：",
+										"name": "STK-1-4-2-3",
+										"options": [],
+										"joinValues": false,
+										"mode": "horizontal",
+										"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=STK-1-4-2-3&diseaseCategoryCode=STK",
+										"required": false,
+										"extractValue": true
+									},
+									{
+										"type": "datetime",
+										"label": "报告日期时间：",
+										"name": "STK-1-4-2-2-1",
+										"mode": "horizontal",
+										"visibleOn": "!Array.isArray(this[\"STK-1-4-2-3\"]) || this[\"STK-1-4-2-3\"][0] !== \"UTD\""
+									},
+									{
+										"type": "checkboxes",
+										"label": "生化检验项目：",
+										"name": "STK-1-4-3-1",
+										"options": [],
+										"joinValues": false,
+										"mode": "horizontal",
+										"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=STK-1-4-3-1&diseaseCategoryCode=STK",
+										"required": true,
+										"extractValue": true
+									},
+									{
+										"type": "checkboxes",
+										"label": "报告日期时间是否确定：",
+										"name": "STK-1-4-3-3",
+										"options": [],
+										"joinValues": false,
+										"mode": "horizontal",
+										"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=STK-1-4-2-3&diseaseCategoryCode=STK",
+										"required": false,
+										"extractValue": true
+									},
+									{
+										"type": "datetime",
+										"label": "报告日期时间：",
+										"name": "STK-1-4-3-2-1",
+										"mode": "horizontal",
+										"visibleOn": "!Array.isArray(this[\"STK-1-4-3-3\"]) || this[\"STK-1-4-3-3\"][0] !== \"UTD\""
+									},
+									{
+										"type": "checkboxes",
+										"label": "急诊/入院后24小时内首次临床检验检查：",
+										"name": "STK-1-4-2",
+										"options": [],
+										"joinValues": false,
+										"mode": "horizontal",
+										"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=STK-1-4-2&diseaseCategoryCode=STK",
+										"required": true,
+										"extractValue": true
+									},
+									{
+										"type": "number",
+										"label": "C-反应蛋白:检测值(mg/L)：",
+										"name": "STK-1-4-2-4",
+										"mode": "horizontal",
+										"visibleOn": "Array.isArray(this[\"STK-1-4-2\"]) && this[\"STK-1-4-2\"].indexOf(\"a\") !== -1"
+									},
+									{
+										"type": "number",
+										"label": "同型半胱氨酸（HCY）:检测值(μmol/L)：",
+										"name": "STK-1-4-2-5",
+										"mode": "horizontal",
+										"visibleOn": "Array.isArray(this[\"STK-1-4-2\"]) && this[\"STK-1-4-2\"].indexOf(\"b\") !== -1"
+									},
+									{
+										"type": "number",
+										"label": "空腹血糖:检测值(mmol/l)：",
+										"name": "STK-1-4-2-6",
+										"mode": "horizontal",
+										"visibleOn": "Array.isArray(this[\"STK-1-4-2\"]) && this[\"STK-1-4-2\"].indexOf(\"c\") !== -1"
+									},
+									{
+										"type": "number",
+										"label": "血清肌酐:检测值(μmol/l)：",
+										"name": "STK-1-4-2-7",
+										"mode": "horizontal",
+										"visibleOn": "Array.isArray(this[\"STK-1-4-2\"]) && this[\"STK-1-4-2\"].indexOf(\"d\") !== -1"
+									},
+									{
+										"type": "number",
+										"label": "血清尿素氮:检测值(mmol/l)：",
+										"name": "STK-1-4-2-8",
+										"mode": "horizontal",
+										"visibleOn": "Array.isArray(this[\"STK-1-4-2\"]) && this[\"STK-1-4-2\"].indexOf(\"e\") !== -1"
+									},
+									{
+										"type": "number",
+										"label": "尿酸:检测值(μmol/l)：",
+										"name": "STK-1-4-2-9",
+										"mode": "horizontal",
+										"visibleOn": "Array.isArray(this[\"STK-1-4-2\"]) && this[\"STK-1-4-2\"].indexOf(\"f\") !== -1"
+									}
+								],
+								"affixFooter": false
+							},
+							{
+								"type": "panel",
+								"title": "急诊或入院后首次心电图（ECG）检查：",
+								"controls": [
+									{
+										"type": "checkboxes",
+										"label": "急诊或入院后是否首次实施心电图（ECG）检查：",
+										"name": "STK-1-5-1",
+										"options": [],
+										"joinValues": false,
+										"mode": "horizontal",
+										"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=STK-1-5-1&diseaseCategoryCode=STK",
+										"required": true,
+										"extractValue": true
+									},
+									{
+										"type": "datetime",
+										"label": "报告日期时间：",
+										"name": "STK-1-4-3-2-1",
+										"mode": "horizontal",
+										"visibleOn": "this[\"STK-1-5-1\"]== \"y\" ",
+										"format": "YYYY-MM-DD HH:mm",
+										"inputFormat": "YYYY-MM-DD HH:mm"
+									},
+									{
+										"type": "select",
+										"label": "心电图（ECG）检查结果：",
+										"name": "STK-1-5-3",
+										"options": [],
+										"visibleOn": "this[\"STK-1-5-1\"]== \"y\" ",
+										"mode": "horizontal",
+										"checkAll": false,
+										"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=STK-1-5-3&diseaseCategoryCode=STK"
+									},
+									{
+										"type": "text",
+										"label": "其他心电图（ECG）检查结果：",
+										"name": "STK-1-5-3-1",
+										"mode": "horizontal",
+										"visibleOn": "this[\"STK-1-5-1\"]== \"oth\" "
+									}
+								],
+								"affixFooter": false
+							}
+						]
+					}
+				]
+			});
+
+			window.amisScoped = amisScoped;
+		})();
+	</script>
+</body>
+
+</html>
