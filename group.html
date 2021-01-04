@@ -5,13 +5,19 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>HelloWorld</title>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/amis@1.0.19/sdk/sdk.css">
+	<link rel="stylesheet" href="http://sdqc.zdrgs.com/library/normalize/4.2.0/normalize.min.css">
+
+	<link rel="stylesheet" href="http://sdqc.zdrgs.com/library/amis/9abe783/cxd-ie11.css">
+	<link rel="stylesheet" href="http://sdqc.zdrgs.com/style/amis.less">
+	<link rel="stylesheet" href="http://sdqc.zdrgs.com/style/core.less">
+
+	<script src="http://sdqc.zdrgs.com/library/jquery/1.9.1/jquery.min.js"></script>
+	<script src="http://sdqc.zdrgs.com/library/regenerator-runtime/0.13.7/runtime.js"></script>
+	<script src="http://sdqc.zdrgs.com/library/amis/9abe783/sdk.js"></script>
 </head>
 
 <body>
 	<div id="root" class="app-wrapper"></div>
-
-	<script src="https://cdn.jsdelivr.net/npm/amis@1.0.19/sdk/sdk.js"></script>
 
 	<script type="text/javascript">
 		(function () {
@@ -26,9 +32,8 @@
 					"mode": "horizontal",
 
 					horizontal: {
-						left: 5,
-						right: 7,
-						offset: 5
+						left: 4,
+						right: 8
 					},
 
 					"controls": [
@@ -76,25 +81,53 @@
 							visibleOn: 'this.YN === "n"',
 							"controls": [
 								{
-									"type": "number",
-									"name": "number",
-									"label": '数字'
-								},
-								{
-									"type": "select",
-									"name": "select",
-									"label": '城市',
+									"type": "radios",
+									"name": "YN2",
+									"label": "是否",
 									options: [
 										{
-											label: '北京',
-											value: 'beijing'
+											label: '是',
+											value: 'y'
 										},
 										{
-											label: '上海',
-											value: 'shanghai'
+											label: '否',
+											value: 'n'
 										}
 									]
 								},
+								{
+									type: 'group',
+									visibleOn: 'this.YN2 === "y"',
+									controls: [
+										{
+											"type": "select",
+
+											"name": "select",
+											"label": '城市',
+											options: [
+												{
+													label: '北京',
+													value: 'beijing'
+												},
+												{
+													label: '上海',
+													value: 'shanghai'
+												}
+											]
+										}
+									]
+								},
+								{
+									type: 'group',
+									visibleOn: 'this.YN2 === "n"',
+									controls: [
+										{
+											"type": "number",
+											"name": "number",
+											"label": '数字'
+										}
+									]
+								}
 							]
 						}
 					]
