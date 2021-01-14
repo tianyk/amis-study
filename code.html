@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" theme="cxd">
 
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>HelloWorld</title>
+	<title>HF</title>
 	<link rel="stylesheet" href="http://sdqc.zdrgs.com/library/normalize/4.2.0/normalize.min.css">
 
 	<link rel="stylesheet" href="http://sdqc.zdrgs.com/library/amis/9abe783/cxd-ie11.css">
@@ -25,15 +25,41 @@
 </head>
 
 <body>
-	<div id="root" class="app-wrapper"></div>
+	<div id="amis" class="app-wrapper"></div>
 
 	<script type="text/javascript">
+		const controls = [];
 		(function () {
-			let amis = amisRequire('amis/embed');
+			const url = new URL(window.location.href);
+			const search = url.searchParams;
+			const imrId = search.get('imrId') || 1026;
+			const debug = search.has('_debug');
+			const viewMode = search.has('view');
 
-			// type 必须 组件的类型 
-			// body 是一个 tpl 组件
-			let amisScoped = amis.embed('#root', /*代码贴到这里*/);
+			const amis = amisRequire('amis/embed');
+			const amisScoped = amis.embed('#amis', {
+				type: 'page',
+				title: '心力衰竭',
+				className: 'sdqc-report-form',
+				initApi: `http://sdqc.zdrgs.com/api/imr/${imrId}/fields?_mode=dev`,
+				data: {
+					diseaseCategoryCode: 'HF',
+					viewMode
+				},
+				body: {
+					type: 'form',
+					name: 'report',
+					debug,
+					"mode": "horizontal",
+					wrapWithPanel: false,
+					"horizontal": {
+						"left": 5,
+						"right": 7,
+						"offset": 5
+					},
+					controls
+				}
+			});
 
 			window.amisScoped = amisScoped;
 		})();

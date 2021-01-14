@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>HelloWorld</title>
+	<link rel="stylesheet" href="http://sdqc.zdrgs.com/library/normalize/4.2.0/normalize.min.css">
+
+	<link rel="stylesheet" href="http://sdqc.zdrgs.com/library/amis/9abe783/cxd-ie11.css">
+	<link rel="stylesheet" href="http://sdqc.zdrgs.com/style/amis.less">
+	<link rel="stylesheet" href="http://sdqc.zdrgs.com/style/core.less">
+
+	<script src="http://sdqc.zdrgs.com/library/jquery/1.9.1/jquery.min.js"></script>
+	<script src="http://sdqc.zdrgs.com/library/regenerator-runtime/0.13.7/runtime.js"></script>
+	<script src="http://sdqc.zdrgs.com/library/amis/9abe783/sdk.js"></script>
+
+	<style>
+		html,
+		body,
+		#root {
+			height: 100%;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="root" class="app-wrapper"></div>
+
+	<script type="text/javascript">
+		(function () {
+			let amis = amisRequire('amis/embed');
+
+			// type 必须 组件的类型 
+			// body 是一个 tpl 组件
+			let amisScoped = amis.embed('#root', {
+				"type": "page",
+				"body": {
+					"type": "form",
+					"api": "https://houtai.baidu.com/api/mock2/form/saveForm",
+					"controls": [
+						{
+							"type": "input-group",
+							"name": "input-group",
+							"label": "input 组合",
+							"controls": [
+								{
+									"type": "number",
+									"placeholder": "搜索作业ID/名称",
+									"inputClassName": "b-r-none p-r-none",
+									"name": "input-group",
+									disabled: true,
+								},
+								{
+									"type": "button",
+									icon: 'fa fa-calculator',
+									"actionType": "dialog",
+									"dialog": {
+										"title": "弹框标题",
+										actions: [
+
+										],
+										"body": {
+											type: 'form',
+											controls: [
+												{
+													"type": "list",
+													"name": "a",
+													"label": "A",
+													"clearable": true,
+													"options": [
+														{
+															"label": "Option A",
+															"value": "a"
+														},
+														{
+															"label": "Option B",
+															"value": "b"
+														}
+													]
+												},
+												{
+													"type": "list",
+													"name": "b",
+													"label": "B",
+													"clearable": true,
+													"options": [
+														{
+															"label": "Option A",
+															"value": "a"
+														},
+														{
+															"label": "Option B",
+															"value": "b"
+														}
+													]
+												}
+											]
+										}
+									}
+								}
+							]
+						},
+					]
+				}
+			});
+
+			window.amisScoped = amisScoped;
+		})();
+	</script>
+</body>
+
+</html>

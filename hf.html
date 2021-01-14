@@ -1,0 +1,2655 @@
+<!DOCTYPE html>
+<html lang="en" theme="cxd">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>HF</title>
+	<link rel="stylesheet" href="http://sdqc.zdrgs.com/library/normalize/4.2.0/normalize.min.css">
+
+	<link rel="stylesheet" href="http://sdqc.zdrgs.com/library/amis/9abe783/cxd-ie11.css">
+	<link rel="stylesheet" href="http://sdqc.zdrgs.com/style/amis.less">
+	<link rel="stylesheet" href="http://sdqc.zdrgs.com/style/core.less">
+
+	<script src="http://sdqc.zdrgs.com/library/jquery/1.9.1/jquery.min.js"></script>
+	<script src="http://sdqc.zdrgs.com/library/regenerator-runtime/0.13.7/runtime.js"></script>
+	<script src="http://sdqc.zdrgs.com/library/amis/9abe783/sdk.js"></script>
+
+	<style>
+		html,
+		body,
+		#root {
+			height: 100%;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="amis" class="app-wrapper"></div>
+
+	<script type="text/javascript">
+		(function () {
+			const url = new URL(window.location.href);
+			const search = url.searchParams;
+			const imrId = search.get('imrId') || 1026;
+			const debug = search.has('_debug');
+			const viewMode = search.has('view');
+
+			const amis = amisRequire('amis/embed');
+			const amisScoped = amis.embed('#amis', {
+				type: 'page',
+				title: '心力衰竭',
+				className: 'sdqc-report-form',
+				initApi: `http://sdqc.zdrgs.com/api/imr/${imrId}/fields?_mode=dev`,
+				data: {
+					diseaseCategoryCode: 'HF',
+					viewMode
+				},
+				toolbar: {
+					"type": "action",
+					"label": "填报要求",
+					icon: 'fa fa-exclamation-circle',
+					"level": "link",
+					"actionType": "dialog",
+					"dialog": {
+						"title": "公告",
+						actions: [],
+						size: 'lg',
+						className: 'report-notice',
+						closeOnEsc: true,
+						"body": {
+							type: 'html',
+							html: `
+						<div data-v-c0d7d944="" class="content">
+						<p>上报内容</p>
+						<p><span style="font-size: 12pt;"><span style="white-space: pre;"> </span>1.<span style="font-family: FangSong;">主要诊断原发病 ICD-10 编码:I05 至 I09、或 I11 至 I13、 或 I20 至 I21、或 I40 至 I41、或 I42 至 I43 伴第二诊断为 I50 的出院患者。&nbsp;</span></span></p>
+						<p><span style="font-size: 12pt;"> </span></p>
+						<p>&nbsp;</p>
+						<p>无需上报内容：</p>
+						<p><span style="white-space: pre;"> </span>1.由外院诊疗后转入本院的病例</p>
+						<p><span style="white-space: pre;"> </span>2.参与临床药物与器械试验的病例</p>
+						<p><span style="white-space: pre;"> </span>3.非心源性的心力衰竭和各种疾病的终末情况</p>
+						<p><span style="white-space: pre;"> </span>4.心功能Ⅰ级的病例</p>
+						<p><span style="white-space: pre;"> </span>5.18岁以下的病例</p>
+						<p><span style="white-space: pre;"> </span>6.同一疾病30日内重复入院</p>
+						<p><span style="white-space: pre;"> </span>7.心脏外科手术后</p>
+						<p><span style="white-space: pre;"> </span>8.产科手术和操作的其他并发症（O75.4）</p>
+						<p><span style="white-space: pre;"> </span>9.流产、异位妊娠或葡萄胎妊娠（O00～O07、O08.8）</p>
+						<p><span style="white-space: pre;"> </span>10.新生儿心力衰竭（P29.0）</p>
+						<p><span style="white-space: pre;"> </span>11.继发性高血压 （I15）</p>
+						<p><span style="white-space: pre;"> </span>12.入院前心脏有各类置入物（心脏起搏、除颤等辅助装置，ICD-9-CM-3编码37.61003～37.95001）</p>
+						<p><span style="white-space: pre;"> </span>13.本次住院天数大于120天</p>
+						<p>&nbsp;</p>
+						<p>数据验证：</p>
+						<p><span style="white-space: pre;"> </span>1. *是必填项目，其他项未填则按未做统计，★为本病种的核心（重点）质量监控指标。</p>
+						<p><span style="white-space: pre;"> </span>2. 强制验证项若超过正常值，系统给予提示，不允许填写。</p>
+						<p><span style="white-space: pre;"> </span>3. 其他项若超出正常值范围，系统给予提示，但允许填写实际数据</p>
+						<p>&nbsp;</p>
+						</div>
+					`
+						}
+					}
+				},
+				body: {
+					type: 'form',
+					name: 'report',
+					debug,
+					"mode": "horizontal",
+					wrapWithPanel: false,
+					"horizontal": {
+						"left": 5,
+						"right": 7,
+						"offset": 5
+					},
+					controls: [
+						{
+							"type": "fieldSet",
+							"collapsable": true,
+							headingClassName: 'report-header',
+							"title": "基本信息",
+							controls: [
+								{
+									"type": "panel",
+									"title": "适用的ICD-10编码与疾病名称",
+									"controls": [
+										{
+											"type": "text",
+											"name": "CM-0-1-1-1",
+											"label": "质控医师",
+											"required": true,
+											size: 'lg',
+											"validations": {
+												maxLength: 50,
+												matchRegexp: /^[\u4e00-\u9fa5a-zA-Z0-9]*$/
+											},
+											"validationErrors": {
+												"matchRegexp": "只允许填写中文汉字、字母、数字"
+											},
+										},
+										{
+											"type": "text",
+											"name": "CM-0-1-1-2",
+											"label": "质控护士",
+											"required": true,
+											size: 'lg'
+										},
+										{
+											"type": "text",
+											"name": "CM-0-1-1-3",
+											"label": "主治医师",
+											"required": true,
+											size: 'lg'
+										},
+										{
+											"type": "text",
+											"name": "CM-0-1-1-4",
+											"label": "责任护士",
+											"required": true,
+											size: 'lg'
+										},
+										{
+											"type": "text",
+											"name": "CM-0-1-1-5",
+											"label": "上报科室",
+											"required": true,
+											size: 'lg'
+										},
+
+										{
+											"type": "text",
+											"name": "caseId",
+											"label": "患者病案号",
+											"required": true,
+											size: 'lg'
+										},
+
+										{
+											"type": "select",
+											"name": "CM-0-1-3-1",
+											"label": "主要诊断或其他诊断ICD-10四位亚目编码与名称",
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-0-1-3-1&diseaseCategoryCode=${diseaseCategoryCode}&checkAllLabel=请选择",
+											required: true,
+											size: 'lg'
+										},
+										{
+											"type": "select",
+											"name": "CM-0-1-3-2",
+											"label": "主要诊断或其他诊断ICD-10六位临床扩展编码与名称",
+											"required": true,
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-0-1-3-2&diseaseCategoryCode=${diseaseCategoryCode}&parent=${CM-0-1-3-1}",
+											size: 'lg'
+										},
+										{
+											"type": "select",
+											"name": "HF-0-1-4-1",
+											"label": "第一诊断或第二诊断对应的原发疾病ICD-10的三位类亚目编码与名称",
+											"required": true,
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-0-1-4-1&diseaseCategoryCode=${diseaseCategoryCode}",
+											size: 'lg'
+										},
+										{
+											"type": "select",
+											"name": "HF-0-1-4-2",
+											"label": "第一诊断或第二诊断对应的原发疾病ICD-10的三位类目编码与名称",
+											"required": true,
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-0-1-4-2&diseaseCategoryCode=${diseaseCategoryCode}&parent=${HF-0-1-4-1}",
+											size: 'lg'
+										},
+
+										{
+											"type": "select",
+											"name": "CM-0-1-4-1",
+											"label": "主要手术操作栏中提取ICD-9-CM-3四位亚目编码与名称",
+											"required": true,
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-0-1-4-1&diseaseCategoryCode=${diseaseCategoryCode}",
+											size: 'lg'
+										},
+
+										{
+											"type": "select",
+											"name": "CM-0-1-4-2",
+											"label": "主要手术操作栏中提取ICD-9-CM-3六位临床扩展编码与名称",
+											"required": true,
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-0-1-4-2&diseaseCategoryCode=${diseaseCategoryCode}&parent=${CM-0-1-4-1}",
+											size: 'lg'
+										},
+
+										{
+											"name": "CM-0-1-5",
+											"type": "radios",
+											"label": "是否出院后31天内重复住院",
+											"required": true,
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-0-1-5&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+									]
+								},
+								{
+									"type": "panel",
+									title: '相关日期时间信息',
+									"controls": [
+										{
+											type: 'date',
+											inputFormat: 'YYYY-MM-DD',
+											format: 'YYYY-MM-DD',
+											name: 'CM-0-2-1-1',
+											required: true,
+											label: '出生日期',
+											size: 'lg'
+										},
+										{
+											type: 'radios',
+											name: 'CM-0-2-1-2',
+											required: true,
+											label: '患者性别',
+											size: 'lg',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-0-2-1-2&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+										{
+											"type": "number",
+											"name": "CM-0-2-1-3",
+											"label": "患者体重（kg）",
+											size: 'lg',
+											min: 0,
+											required: true
+										},
+										{
+											"type": "number",
+											"name": "CM-0-2-1-5",
+											"label": "患者身高（cm）",
+											size: 'lg',
+											min: 0,
+											required: true
+										},
+										{
+											"type": "text",
+											name: 'CM-0-2-1-4',
+											label: "体重指数(Kg/m2)",
+											size: 'lg',
+											disabled: true
+										},
+										{
+											"type": "formula",
+											"name": "CM-0-2-1-4",
+											"formula": `(function(data) {
+										if (typeof this['CM-0-2-1-3'] === 'number' 
+											&& typeof this['CM-0-2-1-5'] === 'number'
+											&& typeof this['CM-0-2-1-5'] !== 0) {
+												var bmi = this['CM-0-2-1-3'] / Math.pow(this['CM-0-2-1-5'] / 100, 2);
+												return parseFloat(bmi.toFixed(2));
+										} else {
+											return null;
+										}
+									}.bind(this))(data);`
+										},
+										{
+											"name": "CM-0-2-2-1",
+											"type": "checkboxes",
+											"label": "发病日期时间是否无法确定或无记录",
+											joinValues: false,
+											extractValue: true,
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-0-2-2-1&diseaseCategoryCode=${diseaseCategoryCode}',
+											size: 'lg'
+										},
+										{
+											"name": "CM-0-2-2-2",
+											"type": "datetime",
+											"label": "发病日期时间",
+											format: 'YYYY-MM-DD HH:mm',
+											inputFormat: "YYYY-MM-DD HH:mm",
+											size: 'lg',
+											visibleOn: '!Array.isArray(this["CM-0-2-2-1"]) || this["CM-0-2-2-1"][0] !== "UTD"'
+										},
+										{
+											"name": "CM-0-2-3-1",
+											"type": "checkboxes",
+											"label": "到达本院急诊或者门诊日期时间是否无法确定或无记录",
+											joinValues: false,
+											extractValue: true,
+											size: 'lg',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-0-2-3-1&diseaseCategoryCode=${diseaseCategoryCode}',
+										},
+										{
+											"name": "CM-0-2-3-2",
+											"type": "datetime",
+											"label": "到达本院急诊或者门诊日期时间",
+											format: 'YYYY-MM-DD HH:mm',
+											"inputFormat": "YYYY-MM-DD HH:mm",
+											size: 'lg',
+											visibleOn: '!Array.isArray(this["CM-0-2-3-1"]) || this["CM-0-2-3-1"][0] !== "UTD"'
+										},
+
+										{
+											"name": "CM-0-2-4-1",
+											"type": "datetime",
+											"label": "入院日期时间",
+											format: 'YYYY-MM-DD HH:mm',
+											"inputFormat": "YYYY-MM-DD HH:mm",
+											size: 'lg',
+										},
+
+										{
+											"name": "CM-0-2-4-2",
+											"type": "datetime",
+											"label": "出院日期时间",
+											format: 'YYYY-MM-DD HH:mm',
+											"inputFormat": "YYYY-MM-DD HH:mm",
+											size: 'lg',
+										},
+
+										{
+											"name": "CM-0-2-5-1",
+											"type": "datetime",
+											"label": "入住CCU日期时间",
+											format: 'YYYY-MM-DD HH:mm',
+											"inputFormat": "YYYY-MM-DD HH:mm",
+											size: 'lg',
+										},
+
+										{
+											"name": "CM-0-2-5-2",
+											"type": "datetime",
+											"label": "离开CCU日期时间",
+											format: 'YYYY-MM-DD HH:mm',
+											"inputFormat": "YYYY-MM-DD HH:mm",
+											size: 'lg',
+										},
+
+										{
+											"name": "CM-0-2-6-1",
+											"type": "datetime",
+											"label": "手术开始（切皮）日期时间",
+											format: 'YYYY-MM-DD HH:mm',
+											"inputFormat": "YYYY-MM-DD HH:mm",
+											size: 'lg',
+										},
+
+										{
+											"name": "CM-0-2-6-2",
+											"type": "datetime",
+											"label": "手术结束（缝皮结束）日期时间",
+											format: 'YYYY-MM-DD HH:mm',
+											"inputFormat": "YYYY-MM-DD HH:mm",
+											size: 'lg',
+										},
+
+										{
+											"type": "custom",
+											onUpdate: (dom, data, prevData, props) => {
+												const cm8 = amisScoped.getComponentByName('report.cm8');
+												if (!cm8) return;
+												// 入院时间
+												const CM_0_2_4_1 = data['CM-0-2-4-1'];
+												// 出院时间
+												const CM_0_2_4_2 = data['CM-0-2-4-2'];
+												// 手术结束（缝皮结束）日期时间
+												const CM_0_2_6_2 = data['CM-0-2-6-2'];
+
+												let CM_4_1 = null, CM_4_2 = null;
+												if (typeof CM_0_2_4_1 === 'string' && typeof CM_0_2_4_2 === 'string') {
+													CM_4_1 = Math.ceil((new Date(CM_0_2_4_2).getTime() - new Date(CM_0_2_4_1).getTime()) / 86400000);
+												}
+
+												if (typeof CM_0_2_4_1 === 'string' && typeof CM_0_2_6_2 === 'string') {
+													CM_4_2 = Math.ceil((new Date(CM_0_2_4_2).getTime() - new Date(CM_0_2_6_2).getTime()) / 86400000);
+												}
+
+												cm8.setValues({ 'CM-4-1': CM_4_1, 'CM-4-2': CM_4_2 });
+											}
+										},
+									]
+								},
+								{
+									"type": "panel",
+									title: '其他相关信息',
+									"controls": [
+										{
+											type: 'select',
+											name: 'CM-0-3-1',
+											label: '费用支付方式',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-0-3-1&diseaseCategoryCode=${diseaseCategoryCode}',
+											size: 'lg',
+										},
+										{
+											type: 'select',
+											name: 'CM-0-3-2',
+											label: '收入住院途径',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-0-3-2&diseaseCategoryCode=${diseaseCategoryCode}',
+											size: 'lg',
+										},
+										{
+											type: 'select',
+											name: 'CM-0-3-3',
+											label: '到院交通工具',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-0-3-3&diseaseCategoryCode=${diseaseCategoryCode}',
+											size: 'lg',
+										}
+									]
+								}
+							]
+						},
+
+						{
+							"type": "fieldSet",
+							"collapsable": true,
+							headingClassName: 'report-header',
+							"title": "HF-1 左心室射血分数左心室功能评价与检测B型利钠肽实施情况",
+							controls: [
+								{
+									"type": "panel",
+									title: 'X线胸片检查',
+									controls: [
+										{
+											type: 'radios',
+											name: 'HF-1-1-1',
+											label: '是否实施首次X线胸片检查',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-1-1-1&diseaseCategoryCode=${diseaseCategoryCode}',
+										},
+										{
+											"name": "HF-1-1-2",
+											"type": "datetime",
+											"label": "首次X线胸片检查报告日期时间",
+											format: 'YYYY-MM-DD HH:mm',
+											"inputFormat": "YYYY-MM-DD HH:mm",
+											size: 'lg',
+											visibleOn: 'this["HF-1-1-1"] === "y"'
+										},
+										{
+											type: 'radios',
+											name: 'HF-1-1-3',
+											label: '首次X线胸片检查报告是否有肺淤血或肺水肿',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-1-1-3&diseaseCategoryCode=${diseaseCategoryCode}',
+											size: 'lg',
+											visibleOn: 'this["HF-1-1-1"] === "y"'
+										}
+									]
+								},
+								{
+									"type": "panel",
+									title: '次超声心动图',
+									controls: [
+										{
+											type: 'radios',
+											name: 'HF-1-2-1',
+											label: '是否实施首次超声心动图(CDFA)检查',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-1-2-1&diseaseCategoryCode=${diseaseCategoryCode}',
+										},
+										{
+											"name": "HF-1-2-2",
+											"type": "datetime",
+											"label": "报告日期时间",
+											format: 'YYYY-MM-DD HH:mm',
+											"inputFormat": "YYYY-MM-DD HH:mm",
+											size: 'lg',
+											visibleOn: 'this["HF-1-2-1"] === "y"'
+										},
+										{
+											"name": "HF-1-2-3-4",
+											"type": "number",
+											min: 0,
+											"label": "左室舒张末内径（LVEDD）(mm)",
+											size: 'lg',
+											visibleOn: 'this["HF-1-2-1"] === "y"'
+										},
+										{
+											"name": "HF-1-2-3-1",
+											"type": "number",
+											min: 0,
+											max: 100,
+											"label": "左室射血分（LVEF）测量值(%)",
+											size: 'lg',
+											visibleOn: 'this["HF-1-2-1"] === "y"'
+										},
+										{
+											"name": "HF-1-2-3-2",
+											"type": "select",
+											"label": "左室射血分数评估结论",
+											size: 'lg',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-1-2-3-2&diseaseCategoryCode=${diseaseCategoryCode}',
+											visibleOn: 'this["HF-1-2-1"] === "y"',
+											disabled: true
+										},
+										{
+											"type": "formula",
+											"name": "HF-1-2-3-2",
+											"formula": `(function(data) {
+										if (typeof this['HF-1-2-3-1'] === 'number') {
+											if (this['HF-1-2-3-1'] > 0 && this['HF-1-2-3-1'] <= 40) {
+												return 'a';
+											} else if (this['HF-1-2-3-1'] > 41 && this['HF-1-2-3-1'] < 49) {
+												return 'c';
+											} else if (this['HF-1-2-3-1'] >= 50) {
+												return 'b';
+											} else {
+												return null;
+											}
+										} else {
+											return null;
+										}
+									}.bind(this))(data);`
+										},
+										{
+											type: 'radios',
+											name: 'HF-1-2-3-3',
+											label: '是否有左心室室壁瘤',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-1-2-3-3&diseaseCategoryCode=${diseaseCategoryCode}',
+											visibleOn: 'this["HF-1-2-1"] === "y"'
+										}
+									]
+								},
+								{
+									"type": "panel",
+									title: '风险程度评估方法',
+									controls: [
+										{
+											type: 'radios',
+											name: 'HF-1-3-1',
+											label: '实施首次评估患者的危险程度',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-1-3-1&diseaseCategoryCode=${diseaseCategoryCode}',
+										},
+										{
+											type: 'select',
+											name: 'HF-1-3-2',
+											label: 'NYHA分级结果的选择',
+											size: 'lg',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-1-3-2&diseaseCategoryCode=${diseaseCategoryCode}',
+											visibleOn: 'this["HF-1-3-1"] === "a"'
+										},
+										{
+											type: 'select',
+											name: 'HF-1-3-3',
+											label: 'Killip分级评估结果的选择',
+											size: 'lg',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-1-3-3&diseaseCategoryCode=${diseaseCategoryCode}',
+											visibleOn: 'this["HF-1-3-1"] === "b"'
+										},
+
+										{
+											type: 'radios',
+											name: 'HF-1-3-5',
+											label: '是否为非瓣膜性房颤/房扑患者',
+											size: 'lg',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-1-3-5&diseaseCategoryCode=${diseaseCategoryCode}',
+										},
+										{
+											type: 'radios',
+											name: 'HF-1-3-6-1',
+											label: '是否实施房颤患者风险评估',
+											size: 'lg',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-1-3-6-1&diseaseCategoryCode=${diseaseCategoryCode}',
+											visibleOn: 'this["HF-1-3-5"] === "y"'
+										},
+
+										{
+											type: 'number',
+											min: 0,
+											max: 9,
+											name: 'HF-1-3-6-2',
+											label: '房颤患者脑险评估分值',
+											size: 'lg',
+											visibleOn: 'this["HF-1-3-6-1"] === "y"'
+										},
+										{
+											type: 'radios',
+											name: 'HF-1-3-6-3',
+											label: 'CHA2DS2-VASc评分大于2分',
+											size: 'lg',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-1-3-6-3&diseaseCategoryCode=${diseaseCategoryCode}',
+											disabled: true,
+											visibleOn: 'this["HF-1-3-6-1"] === "y"'
+										},
+										{
+											type: 'formula',
+											name: 'HF-1-3-6-3',
+											formula: `(function(data) {
+										if (typeof this['HF-1-3-6-2'] === 'number') {
+											if (this['HF-1-3-6-2'] > 2) {
+												return 'y';
+											} else {
+												return 'n';
+											}
+										} else {
+											return null;
+										}
+									}.bind(this))(data)`
+										}
+									]
+								},
+								{
+									"type": "panel",
+									title: '急诊或入院后首次心电图（ECG）检查',
+									controls: [
+										{
+											type: 'radios',
+											name: 'HF-1-4-1',
+											label: '急诊或入院后是否首次心电图（ECG）检查',
+											size: 'lg',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-1-4-1&diseaseCategoryCode=${diseaseCategoryCode}',
+										},
+										{
+											type: 'datetime',
+											name: 'HF-1-4-2',
+											label: '报告日期时间',
+											size: 'lg',
+											format: 'YYYY-MM-DD HH:mm',
+											"inputFormat": "YYYY-MM-DD HH:mm",
+											visibleOn: 'this["HF-1-4-1"] === "y"'
+										},
+										{
+											type: 'number',
+											min: 0,
+											name: 'HF-1-4-3',
+											label: 'QRS宽度(ms)',
+											size: 'lg',
+											visibleOn: 'this["HF-1-4-1"] === "y"'
+										},
+
+										{
+											type: 'checkboxes',
+											name: 'HF-1-4-4',
+											joinValues: false,
+											extractValue: true,
+											label: '心电图（ECG）检查结果选择',
+											visibleOn: 'this["HF-1-4-1"] === "y"',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-1-4-4&diseaseCategoryCode=${diseaseCategoryCode}',
+										},
+
+										{
+											type: 'text',
+											name: 'HF-1-4-4-1',
+											label: '其他心电图检查结果',
+											visibleOn: 'Array.isArray(this["HF-1-4-4"]) && this["HF-1-4-4"].indexOf("oth") !== -1',
+										},
+									]
+								},
+
+								{
+									"type": "panel",
+									title: '首次心脏标志物POCT检测项目选择',
+									controls: [
+										{
+											type: 'radios',
+											name: 'HF-1-5-1-1',
+											label: '是否实施首次检测',
+											size: 'lg',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-1-5-1-1&diseaseCategoryCode=${diseaseCategoryCode}',
+										},
+										{
+											type: 'datetime',
+											name: 'HF-1-5-1-2',
+											label: '报告日期时间',
+											size: 'lg',
+											format: 'YYYY-MM-DD HH:mm',
+											"inputFormat": "YYYY-MM-DD HH:mm",
+											visibleOn: 'this["HF-1-5-1-1"] === "y"'
+										},
+
+										{
+											type: 'checkboxes',
+											name: 'HF-1-5-3',
+											label: '首次检测选择',
+											visibleOn: 'this["HF-1-5-1-1"] === "y"',
+											joinValues: false,
+											extractValue: true,
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-1-5-3&diseaseCategoryCode=${diseaseCategoryCode}',
+										},
+
+										{
+											type: 'number',
+											name: 'HF-1-5-2-1',
+											label: '肌钙蛋白T（TnT）检测值(ng/mL)',
+											size: 'lg',
+											visibleOn: 'this["HF-1-5-1-1"] === "y" && Array.isArray(this["HF-1-5-3"]) && this["HF-1-5-3"].indexOf("a") !== -1',
+										},
+
+										{
+											type: 'number',
+											name: 'HF-1-5-2-2',
+											label: '肌钙蛋白I（TnI）检测值(ng/mL)',
+											size: 'lg',
+											visibleOn: 'this["HF-1-5-1-1"] === "y" && Array.isArray(this["HF-1-5-3"]) && this["HF-1-5-3"].indexOf("b") !== -1',
+										},
+
+										{
+											type: 'number',
+											name: 'HF-1-5-2-3',
+											label: '肌酸激酶同工酶（CK-MB）检测值(ng/mL)',
+											size: 'lg',
+											visibleOn: 'this["HF-1-5-1-1"] === "y" && Array.isArray(this["HF-1-5-3"]) && this["HF-1-5-3"].indexOf("c") !== -1',
+										},
+
+										{
+											type: 'number',
+											name: 'HF-1-5-2-4',
+											label: '心肌肌红蛋白（Myo）检测值(ng/mL)',
+											size: 'lg',
+											visibleOn: 'this["HF-1-5-1-1"] === "y" && Array.isArray(this["HF-1-5-3"]) && this["HF-1-5-3"].indexOf("d") !== -1',
+										},
+
+										{
+											type: 'number',
+											name: 'HF-1-5-2-5',
+											label: 'B型钠尿肽（BNP）检测值(ng/L)',
+											size: 'lg',
+											visibleOn: 'this["HF-1-5-1-1"] === "y" && Array.isArray(this["HF-1-5-3"]) && this["HF-1-5-3"].indexOf("e") !== -1',
+										},
+
+										{
+											type: 'number',
+											name: 'HF-1-5-2-6',
+											label: 'N端B型钠尿肽前体（NT-ProBNP）检测值(ng/L)',
+											size: 'lg',
+											visibleOn: 'this["HF-1-5-1-1"] === "y" && Array.isArray(this["HF-1-5-3"]) && this["HF-1-5-3"].indexOf("f") !== -1',
+										},
+									]
+								}
+							]
+						},
+
+						{
+							"type": "fieldSet",
+							"collapsable": true,
+							headingClassName: 'report-header',
+							"title": "HF-2 到达医院后利尿剂使用情况",
+							controls: [
+								{
+									"type": "panel",
+									title: '',
+									controls: [
+										{
+											type: 'radios',
+											name: 'HF-2-1-A',
+											label: '是否有利尿剂的禁忌证',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-2-1-A&diseaseCategoryCode=${diseaseCategoryCode}',
+											size: 'lg',
+										},
+										{
+											type: 'checkboxes',
+											name: 'HF-2-1',
+											label: '使用利尿剂的禁忌证选择',
+											visibleOn: 'this["HF-2-1-A"] === "y"',
+											joinValues: false,
+											extractValue: true,
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-2-1&diseaseCategoryCode=${diseaseCategoryCode}',
+										},
+
+
+										{
+											type: 'text',
+											name: 'HF-2-1-1',
+											label: '其他使用利尿剂的禁忌证',
+											visibleOn: 'this["HF-2-1-A"] === "y" && Array.isArray(this["HF-2-1"]) && this["HF-2-1].indexOf("oth") !== -1',
+										},
+
+										{
+											type: 'datetime',
+											name: 'HF-2-2',
+											label: '首剂用药日期时间',
+											size: 'lg',
+											format: 'YYYY-MM-DD HH:mm',
+											"inputFormat": "YYYY-MM-DD HH:mm",
+											visibleOn: 'this["HF-2-1-A"] === "n"'
+										},
+
+										{
+											type: 'select',
+											name: 'HF-2-3',
+											label: '常用利尿剂药物',
+											visibleOn: 'this["HF-2-1-A"] === "n"',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-2-3&diseaseCategoryCode=${diseaseCategoryCode}',
+											size: 'lg',
+										},
+
+										{
+											type: 'text',
+											name: 'HF-2-3-1',
+											label: '其他利尿剂药物填写',
+											visibleOn: 'this["HF-2-1-A"] === "n" && this["HF-2-3"] === "oth"',
+											size: 'lg',
+										},
+
+										{
+											type: 'radios',
+											name: 'HF-2-5',
+											label: '入院至使用首剂利尿剂时间大于24小时',
+											visibleOn: 'this["HF-2-1-A"] === "n"',
+											size: 'lg',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-2-5&diseaseCategoryCode=${diseaseCategoryCode}',
+										},
+
+										{
+											type: 'checkboxes',
+											name: 'HF-2-4',
+											label: '延迟治疗原因的选择',
+											visibleOn: 'this["HF-2-5"] === "y"',
+											joinValues: false,
+											extractValue: true,
+											size: 'lg',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-2-4&diseaseCategoryCode=${diseaseCategoryCode}',
+										},
+
+										{
+											type: 'text',
+											name: 'HF-2-4-1',
+											label: '延迟治疗原因的选择',
+											visibleOn: 'this["HF-2-1-A"] === "n" && this["HF-2-5"] === "y" && Array.isArray(this["HF-2-4"]) && this["HF-2-4"].indexOf("oth") !== -1',
+											size: 'lg'
+										}
+									]
+								}
+							]
+						},
+
+						{
+							"type": "fieldSet",
+							"collapsable": true,
+							headingClassName: 'report-header',
+							title: 'HF-3 肾素-血管紧张素系统抑制剂使用情况',
+							controls: [
+								{
+									"type": "panel",
+									title: '',
+									controls: [
+										{
+											type: 'radios',
+											name: 'HF-3-1',
+											label: '左心室收缩功能障碍',
+											size: 'lg',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-3-1&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+										{
+											type: 'radios',
+											name: 'HF-3-2-A',
+											label: '是否有ACEI抑制剂类药物禁忌证',
+											size: 'lg',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-3-2-A&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+										{
+											type: 'checkboxes',
+											name: 'HF-3-2-1',
+											label: 'ACEI抑制剂类药物禁忌证与须慎用的情况',
+											size: 'lg',
+											visibleOn: 'this["HF-3-2-A"] === "y"',
+											joinValues: false,
+											extractValue: true,
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-3-2-1&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+										{
+											type: 'radios',
+											name: 'HF-3-2-B',
+											label: '是否有ARNI类药物禁忌证',
+											size: 'lg',
+											visibleOn: 'this["HF-3-2-A"] === "y"',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-3-2-B&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'checkboxes',
+											name: 'HF-3-2-2',
+											label: 'ARNI类药物禁忌证与须慎用的情况',
+											size: 'lg',
+											joinValues: false,
+											extractValue: true,
+											visibleOn: 'this["HF-3-2-A"] === "y" && this["HF-3-2-B"] === "y"',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-3-2-2&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'select',
+											name: 'HF-3-4-C',
+											label: '使用血管紧张素受体脑啡肽酶抑制剂（ARNI）类药物的选择',
+											size: 'lg',
+											visibleOn: 'this["HF-3-2-A"] === "y" && this["HF-3-2-B"] === "n"',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-3-4-C&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'text',
+											name: 'HF-3-4-C-1',
+											label: '其他使用血管紧张素受体脑啡肽酶抑制剂（ARNI）类药物',
+											size: 'lg',
+											visibleOn: 'this["HF-3-2-A"] === "y" && this["HF-3-2-B"] === "n" && this["HF-3-4-C"] === "oth"',
+										},
+
+										{
+											name: 'HF-3-3-1',
+											type: 'checkboxes',
+											label: '首剂用药日期是否未确定',
+											joinValues: false,
+											extractValue: true,
+											size: 'lg',
+											visibleOn: 'this["HF-3-2-A"] === "y" && this["HF-3-2-B"] === "n"',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-3-3-1&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'datetime',
+											name: 'HF-3-3',
+											label: '首剂用药日期时间',
+											size: 'lg',
+											format: 'YYYY-MM-DD HH:mm',
+											"inputFormat": "YYYY-MM-DD HH:mm",
+											visibleOn: 'this["HF-3-2-A"] === "y" && this["HF-3-2-B"] === "n" && !Array.isArray(this["HF-3-3-1"]) || this["HF-3-3-1"][0] !== "UTD"'
+										},
+
+										{
+											type: 'radios',
+											name: 'HF-3-6',
+											label: '入院至使用首剂ACEI/ARB类药物时间大于24小时',
+											size: 'lg',
+											visibleOn: 'this["HF-3-2-A"] === "y" && this["HF-3-2-B"] === "n"',
+											source: "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-3-6&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'checkboxes',
+											name: 'HF-3-5',
+											label: '延迟治疗原因',
+											size: 'lg',
+											joinValues: false,
+											extractValue: true,
+											source: "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-3-5&diseaseCategoryCode=${diseaseCategoryCode}",
+											visibleOn: 'this["HF-3-2-A"] === "y" && this["HF-3-2-B"] === "n" && this["HF-3-6"] === "y"'
+										},
+
+										{
+											type: 'text',
+											name: 'HF-3-5-1',
+											label: '其他延迟治疗原因',
+											size: 'lg',
+											visibleOn: 'this["HF-3-2-A"] === "y" && this["HF-3-2-B"] === "n" && this["HF-3-6"] === "y" && Array.isArray(this["HF-3-5"]) && this["HF-3-5"].indexOf("oth") !== -1'
+										},
+
+										// 否 ------------
+										{
+											type: 'select',
+											name: 'HF-3-4-A',
+											label: 'ACE抑制剂药物',
+											size: 'lg',
+											visibleOn: 'this["HF-3-2-A"] === "n" && (!this["HF-3-4-B"] || this["HF-3-4-B"] === "def")',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-3-4-A&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'text',
+											name: 'HF-3-4-A-1',
+											label: '其他ACEI药物',
+											size: 'lg',
+											visibleOn: 'this["HF-3-2-A"] === "n" && this["HF-3-4-A"] === "oth"',
+										},
+
+										{
+											type: 'select',
+											name: 'HF-3-4-B',
+											label: 'ARB类药物',
+											size: 'lg',
+											visibleOn: 'this["HF-3-2-A"] === "n" && (!this["HF-3-4-A"] || this["HF-3-4-A"] === "def")',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-3-4-B&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'text',
+											name: 'HF-3-4-B-1',
+											label: '其他ARB类药物填写',
+											size: 'lg',
+											visibleOn: 'this["HF-3-2-A"] === "n" && this["HF-3-4-B"] === "oth"',
+										},
+
+
+
+
+
+
+									]
+								}
+							]
+						},
+
+						{
+							"type": "fieldSet",
+							"collapsable": true,
+							headingClassName: 'report-header',
+							title: 'HF-4 到达医院后β受体阻滞剂情况',
+							controls: [
+								{
+									"type": "panel",
+									title: '',
+									controls: [
+										{
+											type: 'radios',
+											name: 'HF-4-1-1',
+											label: '是否有禁忌证与须慎用的情况',
+											size: 'lg',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-4-1-1&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+										{
+											type: 'checkboxes',
+											name: 'HF-4-1-2',
+											label: 'β-受体阻滞剂禁忌证选择',
+											size: 'lg',
+											visibleOn: 'this["HF-4-1-1"] === "y"',
+											joinValues: false,
+											extractValue: true,
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-4-1-2&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'select',
+											name: 'HF-4-3',
+											label: '使用首剂β-受体阻滞剂药物',
+											size: 'lg',
+											visibleOn: 'this["HF-4-1-1"] === "n"',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-4-3&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											"name": "HF-4-2-1",
+											"type": "checkboxes",
+											"label": "首剂用药日期是否未确定",
+											visibleOn: 'this["HF-4-1-1"] === "n"',
+											joinValues: false,
+											extractValue: true,
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-4-2-1&diseaseCategoryCode=${diseaseCategoryCode}",
+											size: 'lg',
+										},
+
+										{
+											type: 'datetime',
+											name: 'HF-4-2',
+											label: '首剂用药日期时间',
+											size: 'lg',
+											format: 'YYYY-MM-DD HH:mm',
+											"inputFormat": "YYYY-MM-DD HH:mm",
+											visibleOn: 'this["HF-4-1-1"] === "n" && (!Array.isArray(this["HF-4-2-1"]) || this["HF-4-2-1"][0] !== "UTD")'
+										},
+
+										{
+											type: 'radios',
+											name: 'HF-4-5',
+											label: '入院至使用首剂β-受体阻滞剂时间大于24小时',
+											size: 'lg',
+											visibleOn: 'this["HF-4-1-1"] === "n"',
+											source: "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-4-5&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'checkboxes',
+											name: 'HF-4-4',
+											label: '延迟治疗原因',
+											size: 'lg',
+											joinValues: false,
+											extractValue: true,
+											source: "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-4-4&diseaseCategoryCode=${diseaseCategoryCode}",
+											visibleOn: 'this["HF-4-5"] === "y"'
+										},
+
+										{
+											type: 'text',
+											name: 'HF-4-4-1',
+											label: '其他延迟治疗原因',
+											size: 'lg',
+											visibleOn: 'Array.isArray(this["HF-4-4"]) && this["HF-4-4"].indexOf("oth") !== -1'
+										}
+
+									]
+								}
+							]
+						},
+
+						{
+							"type": "fieldSet",
+							"collapsable": true,
+							headingClassName: 'report-header',
+							title: 'HF-5 到达医院后醛固酮拮抗剂使用情况',
+							controls: [
+								{
+									"type": "panel",
+									title: '',
+									controls: [
+										{
+											type: 'radios',
+											name: 'HF-5-1-1',
+											label: '是否有醛固酮受体拮抗剂的禁忌证',
+											size: 'lg',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-5-1-1&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+										{
+											type: 'checkboxes',
+											name: 'HF-5-1-2',
+											label: '醛固酮受体拮抗剂的禁忌证',
+											size: 'lg',
+											visibleOn: 'this["HF-5-1-1"] === "y"',
+											joinValues: false,
+											extractValue: true,
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-5-1-2&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'select',
+											name: 'HF-5-2',
+											label: '重度心衰使用醛固酮受体拮抗剂适用症',
+											size: 'lg',
+											visibleOn: 'this["HF-5-1-1"] === "n"',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-5-2&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'text',
+											name: 'HF-5-2-1-1',
+											label: '其他重度心衰使用醛固酮受体拮抗剂适用症',
+											size: 'lg',
+											visibleOn: 'this["HF-5-1-1"] === "n" && this["HF-5-2"] === "oth"',
+										},
+
+
+										{
+											"name": "HF-5-3-1",
+											"type": "checkboxes",
+											"label": "首剂用药日期是否未确定",
+											visibleOn: 'this["HF-5-1-1"] === "n"',
+											joinValues: false,
+											extractValue: true,
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-5-3-1&diseaseCategoryCode=${diseaseCategoryCode}",
+											size: 'lg',
+										},
+
+										{
+											type: 'datetime',
+											name: 'HF-5-3',
+											label: '首剂用药日期时间',
+											size: 'lg',
+											format: 'YYYY-MM-DD HH:mm',
+											"inputFormat": "YYYY-MM-DD HH:mm",
+											visibleOn: 'this["HF-5-1-1"] === "n" && (!Array.isArray(this["HF-5-3-1"]) || this["HF-5-3-1"][0] !== "UTD")'
+										},
+
+										{
+											type: 'radios',
+											name: 'HF-5-6',
+											label: '入院至使用首剂醛固酮受体拮抗剂时间大于24小时',
+											size: 'lg',
+											visibleOn: 'this["HF-5-1-1"] === "n"',
+											source: "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-5-6&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'select',
+											name: 'HF-5-4',
+											label: '使用醛固酮受体拮抗剂',
+											size: 'lg',
+											visibleOn: 'this["HF-5-6"] === "y"',
+											source: "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-5-4&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'text',
+											name: 'HF-5-4-1',
+											label: '其他醛固酮受体拮抗剂类药物',
+											size: 'lg',
+											visibleOn: 'this["HF-5-6"] === "y" && this["HF-5-4"] === "oth"'
+										},
+
+										{
+											type: 'checkboxes',
+											name: 'HF-5-5',
+											label: '延迟治疗原因',
+											size: 'lg',
+											joinValues: false,
+											extractValue: true,
+											source: "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-5-5&diseaseCategoryCode=${diseaseCategoryCode}",
+											visibleOn: 'this["HF-5-6"] === "y"'
+										},
+
+										{
+											type: 'text',
+											name: 'HF-5-5-1',
+											label: '其他延迟治疗原因',
+											size: 'lg',
+											visibleOn: 'this["HF-5-6"] === "y" && Array.isArray(this["HF-5-5"]) && this["HF-5-5"].indexOf("oth") !== -1'
+										}
+
+									]
+								}
+							]
+						},
+
+						{
+							"type": "fieldSet",
+							"collapsable": true,
+							headingClassName: 'report-header',
+							title: 'HF-6 住院期间利尿剂、ACEI/ARB、β受体阻滞剂、醛固酮拮抗剂使用情况',
+							controls: [
+								{
+									"type": "panel",
+									title: '住院期间长期医嘱中有使用利尿剂记录（有明确适应症，无禁忌症）',
+									controls: [
+										{
+											type: 'radios',
+											name: 'HF-6-1-1',
+											label: '是否有用药长期医嘱',
+											size: 'lg',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-6-1-1&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'select',
+											name: 'HF-6-1-2',
+											label: '常用利尿剂药物的选择',
+											size: 'lg',
+											visibleOn: 'this["HF-6-1-1"] === "y"',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-6-1-2&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'text',
+											name: 'HF-6-1-2-1',
+											label: '其他常用利尿剂',
+											size: 'lg',
+											visibleOn: 'this["HF-6-1-1"] === "y" && this["HF-6-1-2"] && this["HF-6-1-2"] === "oth"'
+										},
+									]
+								},
+								{
+									"type": "panel",
+									title: '住院期间长期医嘱中有使用ACEI或ARB或ARNI药物记录（有明确适应症，无禁忌症）',
+									controls: [
+										{
+											type: 'radios',
+											name: 'HF-6-2-1',
+											label: '是否有ACEI或ARB药物长期医嘱',
+											size: 'lg',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-6-2-1&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'select',
+											name: 'HF-6-2-2',
+											label: '使用ACEI抑制剂或者ARB或者ARNI类药物选择',
+											size: 'lg',
+											visibleOn: 'this["HF-6-2-1"] === "y"',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-6-2-2&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'select',
+											name: 'HF-6-2-2-A',
+											label: 'ACE抑制剂药物',
+											size: 'lg',
+											visibleOn: 'this["HF-6-2-2"] === "a"',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-6-2-2-A&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'text',
+											name: 'HF-6-2-2-A-1',
+											label: '其他ACEI药物填写',
+											size: 'lg',
+											visibleOn: 'this["HF-6-2-2"] === "a" && this["HF-6-2-2-A"] === "oth"',
+										},
+
+										{
+											type: 'select',
+											name: 'HF-6-2-2-B',
+											label: 'ARB类药物',
+											size: 'lg',
+											visibleOn: 'this["HF-6-2-2"] === "b"',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-6-2-2-B&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'text',
+											name: 'HF-6-2-2-B-1',
+											label: '其他ARB药物填写',
+											size: 'lg',
+											visibleOn: 'this["HF-6-2-2"] === "b" && this["HF-6-2-2-B"] === "oth"',
+										},
+
+										{
+											type: 'select',
+											name: 'HF-6-2-2-C',
+											label: '使用血管紧张素受体脑啡肽酶抑制剂（ARNI）类药物的选择',
+											size: 'lg',
+											visibleOn: 'this["HF-6-2-2"] === "c"',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-6-2-2-C&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'text',
+											name: 'HF-6-2-2-C-1',
+											label: '其他使用血管紧张素受体脑啡肽酶抑制剂（ARNI）类药物',
+											size: 'lg',
+											visibleOn: 'this["HF-6-2-2"] === "c" && this["HF-6-2-2-C"] === "oth"',
+										},
+									]
+								},
+
+								{
+									"type": "panel",
+									title: '住院期间长期医嘱中有使用β受体阻滞剂药物记录（有明确适应症，无禁忌症）',
+									controls: [
+										{
+											type: 'radios',
+											name: 'HF-6-3-1',
+											label: '是否有β受体阻滞剂药物医嘱',
+											size: 'lg',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-6-3-1&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'select',
+											name: 'HF-6-3-2',
+											label: '使用首剂β-受体阻滞剂药物',
+											size: 'lg',
+											visibleOn: 'this["HF-6-3-1"] === "y"',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-6-3-2&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'text',
+											name: 'HF-6-3-2-1',
+											label: '其他β-受体阻滞剂药物填写',
+											size: 'lg',
+											visibleOn: 'this["HF-6-3-1"] === "y" && this["HF-6-3-2"] === "oth"',
+										},
+									]
+								},
+
+								{
+									"type": "panel",
+									title: '重度心衰 住院期间长期医嘱中有使用醛固酮拮抗剂药物记录（有明确适应症，无禁忌症）',
+									controls: [
+										{
+											type: 'radios',
+											name: 'HF-6-4-1',
+											label: '是否有醛固酮拮抗剂药物医嘱',
+											size: 'lg',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-6-4-1&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'select',
+											name: 'HF-6-4-2',
+											label: '使用醛固酮受体拮抗剂',
+											size: 'lg',
+											visibleOn: 'this["HF-6-4-1"] === "y"',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-6-4-2&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'text',
+											name: 'HF-6-4-2-1',
+											label: '其他醛固酮受体拮抗剂类药物填写',
+											size: 'lg',
+											visibleOn: 'this["HF-6-4-1"] === "y" && this["HF-6-4-2"] === "oth"',
+										},
+									]
+								},
+
+								{
+									"type": "panel",
+									title: '房颤患者 住院期间长期医嘱中有使用抗凝药物记录（有明确适应症，无禁忌症）',
+									controls: [
+										{
+											type: 'radios',
+											name: 'HF-6-5-1',
+											label: '是否常用抗凝药物',
+											size: 'lg',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-6-5-1&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'select',
+											name: 'HF-6-5-2',
+											label: '选择抗凝药物',
+											size: 'lg',
+											visibleOn: 'this["HF-6-5-1"] === "y"',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-6-5-2&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'text',
+											name: 'HF-6-5-2-1',
+											label: '其他抗凝药物',
+											size: 'lg',
+											visibleOn: 'this["HF-6-5-1"] === "y" && this["HF-6-5-2"] === "oth"',
+										}
+									]
+								},
+
+							]
+						},
+
+						{
+							"type": "fieldSet",
+							"collapsable": true,
+							headingClassName: 'report-header',
+							title: 'HF-7 出院时利尿剂、ACEI/ARB、β受体阻滞剂、醛固酮拮抗剂使用情况',
+							controls: [
+								{
+									"type": "panel",
+									title: '出院带药医嘱中有继续使用利尿剂记录（有明确适应症，无禁忌症）',
+									controls: [
+										{
+											type: 'radios',
+											name: 'HF-7-1-1',
+											label: '出院带药医嘱中是否有继续使用利尿剂记录医嘱',
+											size: 'lg',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-7-1-1&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'select',
+											name: 'HF-7-1-2',
+											label: '常用利尿剂药物的选择',
+											size: 'lg',
+											visibleOn: 'this["HF-7-1-1"] === "y"',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-7-1-2&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'text',
+											name: 'HF-7-1-2-1',
+											label: '其他常用利尿剂',
+											size: 'lg',
+											visibleOn: 'this["HF-7-1-1"] === "y" && this["HF-7-1-2"] === "oth"'
+										},
+									]
+								},
+
+								{
+									"type": "panel",
+									title: '出院带药医嘱中有继续使用ACEI或ARB或者ARNI药物记录（有明确适应症，无禁忌症）',
+									controls: [
+										{
+											type: 'radios',
+											name: 'HF-7-2-1',
+											label: '出院带药医嘱中是否有继续使用ACEI或ARB药物记录医嘱',
+											size: 'lg',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-7-2-1&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'select',
+											name: 'HF-7-2-2',
+											label: '使用ACEI抑制剂或者ARB或者ARNI类药物选择',
+											size: 'lg',
+											visibleOn: 'this["HF-7-2-1"] === "y"',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-7-2-2&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'select',
+											name: 'HF-7-2-2-A',
+											label: 'ACE抑制剂药物',
+											size: 'lg',
+											visibleOn: 'this["HF-7-2-2"] === "a"',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-7-2-2-A&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'text',
+											name: 'HF-7-2-2-A-1',
+											label: '其他ACEI药物填写',
+											size: 'lg',
+											visibleOn: 'this["HF-7-2-2"] === "a" && this["HF-7-2-2-A"] === "oth"',
+										},
+
+										{
+											type: 'select',
+											name: 'HF-7-2-2-B',
+											label: 'ARB类药物',
+											size: 'lg',
+											visibleOn: 'this["HF-7-2-2"] === "b"',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-7-2-2-B&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'text',
+											name: 'HF-7-2-2-B-1',
+											label: '其他ARB药物填写',
+											size: 'lg',
+											visibleOn: 'this["HF-7-2-2"] === "b" && this["HF-7-2-2-B"] === "oth"',
+										},
+
+										{
+											type: 'select',
+											name: 'HF-7-2-2-C',
+											label: '使用血管紧张素受体脑啡肽酶抑制剂（ARNI）类药物的选择',
+											size: 'lg',
+											visibleOn: 'this["HF-7-2-2"] === "c"',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-7-2-2-C&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'text',
+											name: 'HF-7-2-2-C-1',
+											label: '其他使用血管紧张素受体脑啡肽酶抑制剂（ARNI）类药物',
+											size: 'lg',
+											visibleOn: 'this["HF-7-2-2"] === "c" && this["HF-7-2-2-C"] === "oth"',
+										},
+									]
+								},
+
+								{
+									"type": "panel",
+									title: '出院带药医嘱中有继续使用β受体阻滞剂药物记录（有明确适应症，无禁忌症）',
+									controls: [
+										{
+											type: 'radios',
+											name: 'HF-7-3-1',
+											label: '出院带药医嘱中是否有继续使用β受体阻滞剂药物医嘱',
+											size: 'lg',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-7-3-1&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'select',
+											name: 'HF-7-3-2',
+											label: '使用首剂β-受体阻滞剂药物',
+											size: 'lg',
+											visibleOn: 'this["HF-7-3-1"] === "y"',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-7-3-2&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'text',
+											name: 'HF-7-3-2-1',
+											label: '其他β-受体阻滞剂药物填写',
+											size: 'lg',
+											visibleOn: 'this["HF-7-3-1"] === "y" && this["HF-7-3-2"] === "oth"',
+										},
+									]
+								},
+
+								{
+									"type": "panel",
+									title: '重度心衰患者: 出院带药医嘱中有继续使用醛固酮拮抗剂药物记录（有明确适应症，无禁忌症）',
+									controls: [
+										{
+											type: 'radios',
+											name: 'HF-7-4-1',
+											label: '出院带药医嘱中是否有继续使用醛固酮拮抗剂药物医嘱',
+											size: 'lg',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-7-4-1&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'select',
+											name: 'HF-7-4-2',
+											label: '使用醛固酮受体拮抗剂',
+											size: 'lg',
+											visibleOn: 'this["HF-7-4-1"] === "y"',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-7-4-2&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'text',
+											name: 'HF-7-4-2-1',
+											label: '其他醛固酮受体拮抗剂类药物填写',
+											size: 'lg',
+											visibleOn: 'this["HF-7-4-1"] === "y" && this["HF-7-4-2"] === "oth"',
+										},
+									]
+								},
+
+								{
+									"type": "panel",
+									title: '房颤患者: 出院带药医嘱中有使用抗凝药物记录（有明确适应症，无禁忌症）',
+									controls: [
+										{
+											type: 'radios',
+											name: 'HF-7-5-1',
+											label: '出院带药医嘱中是否有继续使用使用抗凝药物医嘱',
+											size: 'lg',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-7-5-1&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'select',
+											name: 'HF-7-5-2',
+											label: '选择抗凝药物',
+											size: 'lg',
+											visibleOn: 'this["HF-7-5-1"] === "y"',
+											"source": "http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-7-5-2&diseaseCategoryCode=${diseaseCategoryCode}",
+										},
+
+										{
+											type: 'text',
+											name: 'HF-7-5-2-1',
+											label: '其他抗凝药物',
+											size: 'lg',
+											visibleOn: 'this["HF-7-5-1"] === "y" && this["HF-7-5-2"] === "oth"',
+										}
+									]
+								},
+							]
+						},
+
+						{
+							"type": "fieldSet",
+							"collapsable": true,
+							headingClassName: 'report-header',
+							title: 'HF-8 离院方式',
+							controls: [{
+								"type": "panel",
+								title: '',
+								name: 'cm8',
+								actions: [],
+								mode: 'horizontal',
+								"horizontal": {
+									"left": 5,
+									"right": 7,
+									"offset": 5
+								},
+								controls: [
+									{
+										type: 'number',
+										disabled: true,
+										name: 'CM-4-1',
+										size: 'lg',
+										label: '住院天数',
+									},
+									{
+										type: 'number',
+										disabled: true,
+										name: 'CM-4-2',
+										size: 'lg',
+										label: '其中:术后住院天数',
+									},
+									{
+										type: 'select',
+										name: 'CM-4-3',
+										size: 'lg',
+										label: '离院方式选择',
+										source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-4-3&diseaseCategoryCode=${diseaseCategoryCode}'
+									},
+									{
+										type: 'select',
+										name: 'CM-4-5',
+										size: 'lg',
+										visibleOn: 'this["CM-4-3"] === "d"',
+										label: '非医嘱离院可能涉及因素',
+										source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-4-5&diseaseCategoryCode=${diseaseCategoryCode}'
+									},
+									{
+										type: 'text',
+										name: 'CM-4-4-1',
+										label: '其他非医嘱离院因素填写',
+										size: 'lg',
+										visibleOn: 'this["CM-4-3"] === "d" && this["CM-4-5"] === "oth"',
+									},
+									{
+										type: 'select',
+										name: 'CM-4-6',
+										size: 'lg',
+										visibleOn: 'this["CM-4-3"] === "e"',
+										label: '死亡可能涉及因素',
+										source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-4-6&diseaseCategoryCode=${diseaseCategoryCode}'
+									}
+
+								]
+
+							}]
+
+						},
+
+						{
+							"type": "fieldSet",
+							"collapsable": true,
+							headingClassName: 'report-header',
+							title: 'HF-9 住院期间为患者提供健康教育与出院时提供教育告知五要素情况',
+							controls: [
+								{
+									"type": "panel",
+									title: '健康（戒烟）辅导',
+									controls: [
+										{
+											type: 'radios',
+											name: 'HF-8-1-1',
+											size: 'lg',
+											label: '是否有吸烟史',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-8-1-1&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+										{
+											type: 'checkboxes',
+											name: 'HF-8-1-2',
+											size: 'lg',
+											visibleOn: 'this["HF-8-1-1"] === "y"',
+											joinValues: false,
+											extractValue: true,
+											label: '吸烟程度评估有记录',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-8-1-2&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+										{
+											type: 'checkboxes',
+											name: 'HF-8-1-3',
+											size: 'lg',
+											visibleOn: 'this["HF-8-1-1"] === "y"',
+											joinValues: false,
+											extractValue: true,
+											label: '接受戒烟的建议或者戒烟治疗有记录',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-8-1-3&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+
+
+									]
+								},
+								{
+									"type": "panel",
+									title: '控制危险因素',
+									controls: [
+										{
+											type: 'checkboxes',
+											name: 'HF-8-2-1-A',
+											size: 'lg',
+											joinValues: false,
+											extractValue: true,
+											label: '心衰原发疾病评估与教育',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-8-2-1-A&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+										{
+											type: 'checkboxes',
+											name: 'HF-8-2-1-B',
+											size: 'lg',
+											joinValues: false,
+											extractValue: true,
+											label: '实施控制主要危险因素评估与教育',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-8-2-1-B&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+										{
+											type: 'radios',
+											name: 'HF-8-2-2',
+											size: 'lg',
+											label: '对控制危险因素评估的结果进行针对性的教育',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-8-2-2&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+									]
+								},
+								{
+									"type": "panel",
+									title: '坚持二级预防',
+									controls: [
+										{
+											type: 'checkboxes',
+											name: 'HF-8-3',
+											size: 'lg',
+											joinValues: false,
+											extractValue: true,
+											label: '二级预防',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-8-3&diseaseCategoryCode=${diseaseCategoryCode}'
+										}
+									]
+								},
+								{
+									"type": "panel",
+									title: '履行出院教育与告知五项要素',
+									controls: [
+										{
+											type: 'checkboxes',
+											name: 'HF-8-4-1',
+											size: 'lg',
+											joinValues: false,
+											extractValue: true,
+											label: '交与患者“出院小结”的副本告知患者出院时风险因素',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-8-4-1&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+										{
+											type: 'checkboxes',
+											name: 'HF-8-4-2',
+											size: 'lg',
+											joinValues: false,
+											extractValue: true,
+											label: '出院带药',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-8-4-2&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+										{
+											type: 'checkboxes',
+											name: 'HF-8-4-3',
+											size: 'lg',
+											joinValues: false,
+											extractValue: true,
+											label: '告知发生紧急情况时求援救治途径',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-8-4-3&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+										{
+											type: 'checkboxes',
+											name: 'HF-8-4-5',
+											size: 'lg',
+											joinValues: false,
+											extractValue: true,
+											label: '出院时教育与随访',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-8-4-5&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+										{
+											type: 'checkboxes',
+											name: 'HF-8-4-6',
+											size: 'lg',
+											joinValues: false,
+											extractValue: true,
+											label: '告知何为风险因素与紧急情况',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-8-4-5&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+									]
+								},
+								{
+									"type": "panel",
+									title: '出院前风险评估',
+									controls: [
+										{
+											type: 'radios',
+											name: 'HF-9-2-1-1',
+											size: 'lg',
+											label: '实施末次X线胸片检查',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-9-2-1-1&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+
+										{
+
+											type: 'radios',
+											name: 'HF-9-2-1-2',
+											size: 'lg',
+											label: '是否有肺淤血或肺水肿',
+											visibleOn: 'this["HF-9-2-1-1"] === "y"',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-9-2-1-2&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+
+										{
+											type: 'radios',
+											name: 'HF-9-2-2-1',
+											size: 'lg',
+											label: '是否实施末次超声心动图(CDFA)检查',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-9-2-2-1&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+
+										{
+											type: 'number',
+											min: 0,
+											name: 'HF-9-2-2-2-4',
+											size: 'lg',
+											label: 'QRS宽度(ms)',
+											visibleOn: 'this["HF-9-2-2-1"] === "y"'
+										},
+										{
+											type: 'number',
+											min: 10,
+											max: 100,
+											name: 'HF-9-2-2-2-1',
+											size: 'lg',
+											label: '左室射血分（LVEF）测量值(%)',
+											visibleOn: 'this["HF-9-2-2-1"] === "y"'
+										},
+
+
+										{
+											"name": "HF-9-2-2-2-2",
+											"type": "select",
+											"label": "左室射血分数评估结论",
+											size: 'lg',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-1-2-3-2&diseaseCategoryCode=${diseaseCategoryCode}',
+											visibleOn: 'this["HF-9-2-2-1"] === "y"',
+											disabled: true
+										},
+										{
+											"type": "formula",
+											"name": "HF-9-2-2-2-2",
+											"formula": `(function(data) {
+										if (typeof this['HF-9-2-2-2-1'] === 'number') {
+											if (this['HF-9-2-2-2-1'] > 0 && this['HF-9-2-2-2-1'] <= 40) {
+												return 'a';
+											} else if (this['HF-9-2-2-2-1'] > 41 && this['HF-9-2-2-2-1'] < 49) {
+												return 'c';
+											} else if (this['HF-9-2-2-2-1'] >= 50) {
+												return 'b';
+											} else {
+												return null;
+											}
+										} else {
+											return null;
+										}
+									}.bind(this))(data);`
+										},
+
+										{
+											type: 'radios',
+											name: 'HF-9-2-2-2-3',
+											size: 'lg',
+											visibleOn: 'this["HF-9-2-2-1"] === "y"',
+											label: '是否有左心室室壁瘤',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-9-2-2-2-3&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+
+										{
+											type: 'radios',
+											name: 'HF-9-2-3-1',
+											size: 'lg',
+											label: '实施末次风险程度评估',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-9-2-3-1&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+										{
+											type: 'select',
+											name: 'HF-9-2-3-2-AB',
+											size: 'lg',
+											label: '末次风险程度评估',
+											visibleOn: 'this["HF-9-2-3-1"] === "y"',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-9-2-3-2-AB&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+										{
+											type: 'select',
+											name: 'HF-9-2-3-2',
+											size: 'lg',
+											label: 'NYHA分级结果',
+											visibleOn: 'this["HF-9-2-3-2-AB"] === "a"',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-9-2-3-2&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+										{
+											type: 'select',
+											name: 'HF-9-2-3-3',
+											size: 'lg',
+											label: 'Killip分级评估结果',
+											visibleOn: 'this["HF-9-2-3-2-AB"] === "b"',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-9-2-3-3&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+
+										{
+											type: 'radios',
+											name: 'HF-9-2-4-1',
+											size: 'lg',
+											label: '实施末次检测',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-9-2-4-1&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+
+										{
+											type: 'checkboxes',
+											name: 'HF-9-2-4-2',
+											label: '末次检测选择',
+											joinValues: false,
+											extractValue: true,
+											visibleOn: 'this["HF-9-2-4-1"] === "y"',
+											size: 'lg',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-9-2-4-2&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+
+										{
+											type: 'number',
+											name: 'HF-9-2-4-2-1',
+											label: '肌钙蛋白T（TnT）检测值(ng/mL)',
+											size: 'lg',
+											visibleOn: 'this["HF-9-2-4-1"] === "y" && Array.isArray(this["HF-9-2-4-2"]) && this["HF-9-2-4-2"].indexOf("a") !== -1',
+										},
+
+										{
+											type: 'number',
+											name: 'HF-9-2-4-2-2',
+											label: '肌钙蛋白I（TnI）检测值(ng/mL)',
+											size: 'lg',
+											visibleOn: 'this["HF-9-2-4-1"] === "y" && Array.isArray(this["HF-9-2-4-2"]) && this["HF-9-2-4-2"].indexOf("b") !== -1',
+										},
+
+										{
+											type: 'number',
+											name: 'HF-9-2-4-2-3',
+											label: '肌酸激酶同工酶（CK-MB）检测值(ng/mL)',
+											size: 'lg',
+											visibleOn: 'this["HF-9-2-4-1"] === "y" && Array.isArray(this["HF-9-2-4-2"]) && this["HF-9-2-4-2"].indexOf("c") !== -1',
+										},
+
+										{
+											type: 'number',
+											name: 'HF-9-2-4-2-4',
+											label: '心肌肌红蛋白（Myo）检测值(ng/mL)',
+											size: 'lg',
+											visibleOn: 'this["HF-9-2-4-1"] === "y" && Array.isArray(this["HF-9-2-4-2"]) && this["HF-9-2-4-2"].indexOf("d") !== -1',
+										},
+
+										{
+											type: 'number',
+											name: 'HF-9-2-4-2-5',
+											label: 'B型钠尿肽（BNP）检测值(ng/L)',
+											size: 'lg',
+											visibleOn: 'this["HF-9-2-4-1"] === "y" && Array.isArray(this["HF-9-2-4-2"]) && this["HF-9-2-4-2"].indexOf("e") !== -1',
+										},
+
+										{
+											type: 'number',
+											name: 'HF-9-2-4-2-6',
+											label: 'N端B型钠尿肽前体（NT-ProBNP）检测值(ng/L)',
+											size: 'lg',
+											visibleOn: 'this["HF-9-2-4-1"] === "y" && Array.isArray(this["HF-9-2-4-2"]) && this["HF-9-2-4-2"].indexOf("f") !== -1',
+										},
+									]
+								}
+							]
+
+						},
+
+						{
+							"type": "fieldSet",
+							"collapsable": true,
+							headingClassName: 'report-header',
+							title: 'HF-10 患者对服务的体验与评价',
+							controls: [
+								{
+									"type": "panel",
+									title: '',
+									controls: [
+										{
+											type: 'radios',
+											name: 'CM-5-1',
+											label: '患者是否对服务的体验与评价',
+											size: 'lg',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-5-1&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+										{
+											type: 'select',
+											name: 'CM-5-2-1',
+											label: '整体医院评级',
+											size: 'lg',
+											visibleOn: 'this["CM-5-1"] === "y"',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-5-2-1&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+
+										{
+											type: 'select',
+											name: 'CM-5-2-2',
+											label: '患者推荐',
+											size: 'lg',
+											visibleOn: 'this["CM-5-1"] === "y"',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-5-2-2&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+
+										{
+											type: 'select',
+											name: 'CM-5-2-3',
+											label: '病房、床单元和卫生间清洁度',
+											size: 'lg',
+											visibleOn: 'this["CM-5-1"] === "y"',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-5-2-3&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+
+										{
+											type: 'select',
+											name: 'CM-5-2-5',
+											label: '病房与周边噪音',
+											size: 'lg',
+											visibleOn: 'this["CM-5-1"] === "y"',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-5-2-5&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+										{
+											type: 'select',
+											name: 'CM-5-2-6',
+											label: '医生沟通',
+											size: 'lg',
+											visibleOn: 'this["CM-5-1"] === "y"',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-5-2-6&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+
+										{
+											type: 'select',
+											name: 'CM-5-2-7',
+											label: '护士沟通',
+											size: 'lg',
+											visibleOn: 'this["CM-5-1"] === "y"',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-5-2-7&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+
+										{
+											type: 'select',
+											name: 'CM-5-2-8',
+											label: '药师沟通',
+											size: 'lg',
+											visibleOn: 'this["CM-5-1"] === "y"',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-5-2-8&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+										{
+											type: 'select',
+											name: 'CM-5-2-9',
+											label: '康复计划',
+											size: 'lg',
+											visibleOn: 'this["CM-5-1"] === "y"',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-5-2-9&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+
+										{
+											type: 'select',
+											name: 'CM-5-2-10',
+											label: '出院时的知情告知',
+											size: 'lg',
+											visibleOn: 'this["CM-5-1"] === "y"',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-5-2-10&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+
+										{
+											type: 'select',
+											name: 'CM-5-2-11',
+											label: '膳食评价',
+											size: 'lg',
+											visibleOn: 'this["CM-5-1"] === "y"',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=CM-5-2-11&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+									]
+								}
+							]
+						},
+
+						{
+							"type": "fieldSet",
+							"collapsable": true,
+							headingClassName: 'report-header',
+							title: 'HF-11 慢性HFrEF患者的心脏植入型电子器械治疗临床应用符合适应症完成',
+							controls: [
+								{
+									"type": "panel",
+									title: '',
+									controls: [
+										{
+											type: 'radios',
+											name: 'HF-11-4-1',
+											label: '心脏再同步化临床应用符合适应症',
+											size: 'lg',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-11-4-1&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+									]
+								},
+								{
+									"type": "panel",
+									title: '心脏再同步化（CRT）临床应用符合适应症',
+									controls: [
+										{
+											type: 'checkboxes',
+											name: 'HF-11-1-1',
+											label: 'CRT临床应用的适应证（Ⅰ类）选择',
+											size: 'lg',
+											joinValues: false,
+											extractValue: true,
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-11-4-1&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+
+										{
+											type: 'select',
+											name: 'HF-11-1-2',
+											label: '安装心脏再同步治疗（CRT）装置',
+											size: 'lg',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-11-1-2&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+
+										{
+											type: 'datetime',
+											name: 'HF-11-1-3',
+											label: '安装日期时间',
+											size: 'lg',
+											format: 'YYYY-MM-DD HH:mm',
+											inputFormat: "YYYY-MM-DD HH:mm",
+										},
+
+										{
+											type: 'text',
+											name: 'HF-11-1-4-1',
+											label: '心脏再同步治疗（CRT）装置生产企业',
+											size: 'lg',
+										},
+
+										{
+											type: 'text',
+											name: 'HF-11-1-4-2',
+											label: '心脏再同步治疗（CRT）装置型号',
+											size: 'lg',
+										},
+
+										{
+											type: 'number',
+											min: 0,
+											name: 'HF-11-1-4-3',
+											label: '心脏再同步治疗（CRT）装置的费用(元)',
+											size: 'lg',
+										},
+									]
+								},
+								{
+									"type": "panel",
+									title: '埋藏式心律转复除颤器（ICD）临床应用符合适应症',
+									controls: [
+										{
+											type: 'select',
+											name: 'HF-11-5-1',
+											label: '是否有在药物优化治疗超过3个月后实施埋藏式心律转复除颤器（ICD）的记录',
+											size: 'lg',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-11-5-1&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+
+										{
+											type: 'radios',
+											name: 'HF-11-5-2',
+											label: '心衰患者植入ICD适应证',
+											size: 'lg',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-11-5-2&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+
+										{
+											type: 'select',
+											name: 'HF-11-5-3',
+											label: '一级预防适应证',
+											size: 'lg',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-11-5-3&diseaseCategoryCode=${diseaseCategoryCode}',
+											visibleOn: 'this["HF-11-5-2"] === "a"'
+										},
+
+										{
+											type: 'select',
+											name: 'HF-11-5-3-1',
+											label: '缺血性心脏病患者',
+											size: 'lg',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-11-5-3-1&diseaseCategoryCode=${diseaseCategoryCode}',
+											visibleOn: 'this["HF-11-5-2"] === "a" && this["HF-11-5-3"] === "a"'
+										},
+
+										{
+											type: 'select',
+											name: 'HF-11-5-3-2',
+											label: '非缺血性心衰患者',
+											size: 'lg',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-11-5-3-1&diseaseCategoryCode=${diseaseCategoryCode}',
+											visibleOn: 'this["HF-11-5-2"] === "a" && this["HF-11-5-3"] === "b"'
+										},
+
+										{
+											type: 'select',
+											name: 'HF-11-5-4',
+											label: '二级预防适应证',
+											size: 'lg',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-11-5-4&diseaseCategoryCode=${diseaseCategoryCode}',
+											visibleOn: 'this["HF-11-5-2"] === "b"'
+										},
+
+										{
+											type: 'radios',
+											name: 'HF-11-2-2',
+											label: '是否安装埋藏式心律转复除颤器（ICD）装置',
+											size: 'lg',
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-11-2-2&diseaseCategoryCode=${diseaseCategoryCode}',
+										},
+
+										{
+											type: 'datetime',
+											name: 'HF-11-2-3',
+											label: '安装日期时间',
+											format: 'YYYY-MM-DD HH:mm',
+											inputFormat: "YYYY-MM-DD HH:mm",
+											size: 'lg',
+											visibleOn: 'this["HF-11-2-2"] === "y"'
+										},
+
+										{
+											type: 'text',
+											name: 'HF-11-2-4-1',
+											label: '埋藏式心律转复除颤器（ICD）装置生产企业',
+											size: 'lg',
+											visibleOn: 'this["HF-11-2-2"] === "y"'
+										},
+
+										{
+											type: 'text',
+											name: 'HF-11-2-4-2',
+											label: '埋藏式心律转复除颤器（ICD）装置型号',
+											size: 'lg',
+											visibleOn: 'this["HF-11-2-2"] === "y"'
+										},
+
+										{
+											type: 'number',
+											min: 0,
+											name: 'HF-11-2-5',
+											label: '埋藏式心律转复除颤器（ICD）装置的费用(元)',
+											size: 'lg',
+											visibleOn: 'this["HF-11-2-2"] === "y"'
+										},
+									]
+								},
+								{
+									"type": "panel",
+									title: '慢性HFrEF患者的心脏植入型电子器械治疗前后，指导通过优化流程实现从医院到社区的无缝衔接有记录',
+									controls: [
+										{
+											type: 'checkboxes',
+											name: 'HF-11-3-1',
+											label: '通过优化流程实现从医院到社区的无缝衔接',
+											size: 'lg',
+											joinValues: false,
+											extractValue: true,
+											source: 'http://sdqc.zdrgs.com/api/dict?_mode=dev&dictName=HF-11-3-1&diseaseCategoryCode=${diseaseCategoryCode}'
+										},
+									]
+								},
+							]
+						},
+
+						{
+							"type": "fieldSet",
+							"collapsable": true,
+							headingClassName: 'report-header',
+							title: 'HF-12 住院费用',
+							controls: [
+								{
+									"type": "panel",
+									title: '',
+									controls: [
+										{
+											type: 'number',
+											name: 'CM-6-1',
+											min: 0,
+											size: 'lg',
+											label: '住院总费用'
+										},
+										{
+											type: 'number',
+											name: 'CM-6-2',
+											min: 0,
+											size: 'lg',
+											label: '住院总费用其中自付金额'
+										},
+										{
+											type: 'number',
+											name: 'CM-6-3',
+											min: 0,
+											size: 'lg',
+											label: '一般医疗服务费'
+										},
+										{
+											type: 'number',
+											name: 'CM-6-4',
+											min: 0,
+											size: 'lg',
+											label: '一般治疗操作费'
+										},
+										{
+											type: 'number',
+											name: 'CM-6-5',
+											min: 0,
+											size: 'lg',
+											label: '护理费'
+										},
+										{
+											type: 'number',
+											name: 'CM-6-6',
+											min: 0,
+											size: 'lg',
+											label: '综合医疗服务类其他费用'
+										},
+										{
+											type: 'number',
+											name: 'CM-6-7',
+											min: 0,
+											size: 'lg',
+											label: '病理诊断费'
+										},
+
+										{
+											type: 'number',
+											name: 'CM-6-8',
+											min: 0,
+											size: 'lg',
+											label: '实验室诊断费'
+										},
+
+										{
+											type: 'number',
+											name: 'CM-6-9',
+											min: 0,
+											size: 'lg',
+											label: '影像学诊断费'
+										},
+
+										{
+											type: 'number',
+											name: 'CM-6-10',
+											min: 0,
+											size: 'lg',
+											label: '临床诊断项目费'
+										},
+
+										{
+											type: 'number',
+											name: 'CM-6-11',
+											min: 0,
+											size: 'lg',
+											label: '非手术治疗项目费'
+										},
+
+										{
+											type: 'number',
+											name: 'CM-6-12',
+											min: 0,
+											size: 'lg',
+											label: '其中：临床物理治疗费'
+										},
+
+										{
+											type: 'number',
+											name: 'CM-6-13',
+											min: 0,
+											size: 'lg',
+											label: '手术治疗费'
+										},
+
+										{
+											type: 'number',
+											name: 'CM-6-14',
+											min: 0,
+											size: 'lg',
+											label: '其中：麻醉费'
+										},
+
+										{
+											type: 'number',
+											name: 'CM-6-15',
+											min: 0,
+											size: 'lg',
+											label: '其中：手术费'
+										},
+										{
+											type: 'number',
+											name: 'CM-6-16',
+											min: 0,
+											size: 'lg',
+											label: '康复费'
+										},
+
+										{
+											type: 'number',
+											name: 'CM-6-17',
+											min: 0,
+											size: 'lg',
+											label: '中医治疗费'
+										},
+
+										{
+											type: 'number',
+											name: 'CM-6-18',
+											min: 0,
+											size: 'lg',
+											label: '西药费'
+										},
+
+										{
+											type: 'number',
+											name: 'CM-6-19',
+											min: 0,
+											size: 'lg',
+											label: '其中：抗菌药物费'
+										},
+
+										{
+											type: 'number',
+											name: 'CM-6-20',
+											min: 0,
+											size: 'lg',
+											label: '中成药费'
+										},
+
+										{
+											type: 'number',
+											name: 'CM-6-21',
+											min: 0,
+											size: 'lg',
+											label: '中草药费'
+										},
+
+										{
+											type: 'number',
+											name: 'CM-6-22',
+											min: 0,
+											size: 'lg',
+											label: '血费'
+										},
+
+										{
+											type: 'number',
+											name: 'CM-6-23',
+											min: 0,
+											size: 'lg',
+											label: '白蛋白类制品费'
+										},
+
+										{
+											type: 'number',
+											name: 'CM-6-24',
+											min: 0,
+											size: 'lg',
+											label: '球蛋白类制品费'
+										},
+
+										{
+											type: 'number',
+											name: 'CM-6-25',
+											min: 0,
+											size: 'lg',
+											label: '凝血因子类制品费'
+										},
+
+										{
+											type: 'number',
+											name: 'CM-6-26',
+											min: 0,
+											size: 'lg',
+											label: '细胞因子类制品费'
+										},
+
+										{
+											type: 'number',
+											name: 'CM-6-27',
+											min: 0,
+											size: 'lg',
+											label: '检查用一次性医用材料费'
+										},
+
+										{
+											type: 'number',
+											name: 'CM-6-28',
+											min: 0,
+											size: 'lg',
+											label: '治疗用一次性医用材料费'
+										},
+
+										{
+											type: 'number',
+											name: 'CM-6-29',
+											min: 0,
+											size: 'lg',
+											label: '手术用一次性医用材料费'
+										},
+
+										{
+											type: 'number',
+											name: 'CM-6-30',
+											min: 0,
+											size: 'lg',
+											label: '其他费'
+										},
+									]
+								}
+							]
+						},
+
+						// {
+						// 	type: 'custom',
+						// 	className: 'sdqc-report-form-footer',
+						// 	onMount: (dom, value, onChange, props) => {
+						// 		const $save = $(`<button type="button" class="a-Button a-Button--default"><span>保存</span></button>`);
+						// 		const $submit = $(`<button type="button" class="a-Button a-Button--primary"><span>提交</span></button>`);
+						// 		$(dom).append($save, $submit)
+						// 		$(dom).children('button').not(':first').css('margin-left', '15px');
+
+						// 		$submit.on('click', function (evt) {
+						// 			evt.preventDefault();
+
+						// 			const components = getComponents(amisScoped);
+						// 			// 所有表单
+						// 			const forms = components.filter(com => com.props?.type === 'form');
+						// 			// 可见的字段
+						// 			const visibleFields = components.map(com => com.props?.name).filter(Boolean);
+
+						// 			(async () => {
+						// 				const valids = await Promise.all(forms.map(form => form.validate(true)));
+						// 				if (valids.includes(false)) {
+						// 					return props.env.notify('error', '表单验证失败，请仔细检查');
+						// 				}
+
+						// 				const values = forms.reduce((values, form) => Object.assign(values, form.getValues()), {});
+						// 				for (const field in values) {
+						// 					if (!visibleFields.includes(field)) values[field] = undefined;
+						// 					// trim 
+						// 					if (typeof values[field] === 'string' && values[field].trim() === '') values[field] = undefined;
+						// 				}
+
+						// 				try {
+						// 					const { data: res } = await axios.post(`http://sdqc.zdrgs.com/api/imr/${imrId}/submit`, values);
+						// 					const { status = -1, msg = '服务器错误' } = res;
+						// 					if (status !== 0) throw new Error(msg);
+						// 					props.env.notify('success', msg);
+						// 				} catch (err) {
+						// 					const message = err.response?.data?.message || err.message;
+						// 					props.env.notify('error', message);
+						// 				}
+						// 			})();
+						// 		});
+
+						// 		$save.on('click', function (evt) {
+						// 			evt.preventDefault();
+
+						// 			const components = getComponents(amisScoped);
+						// 			// 所有表单
+						// 			const forms = components.filter(com => com.props?.type === 'form');
+						// 			// 可见的字段
+						// 			const visibleFields = components.map(com => com.props?.name).filter(Boolean);
+
+						// 			const values = forms.reduce((values, form) => Object.assign(values, form.getValues()), {});
+						// 			for (const field in values) {
+						// 				if (!visibleFields.includes(field)) values[field] = undefined;
+						// 				// trim 
+						// 				if (typeof values[field] === 'string' && values[field].trim() === '') values[field] = undefined;
+						// 			}
+
+						// 			// props.env.fetcher(`http://sdqc.zdrgs.com/api/imr/${imrId}/save`, 'POST', values)
+						// 			(async () => {
+						// 				try {
+						// 					const { data: res } = await axios.post(`http://sdqc.zdrgs.com/api/imr/${imrId}/save`, values);
+						// 					const { status = -1, msg = '服务器错误' } = res;
+						// 					if (status !== 0) throw new Error(msg);
+						// 					props.env.notify('success', msg);
+						// 				} catch (err) {
+						// 					const message = err.response?.data?.message || err.message;
+						// 					props.env.notify('error', message);
+						// 				}
+						// 			})();
+						// 		});
+						// 	}
+						// },
+					]
+
+				}
+			});
+
+			window.amisScoped = amisScoped;
+		})();
+	</script>
+</body>
+
+</html>
